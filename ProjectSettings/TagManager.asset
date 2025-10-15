@@ -1,0 +1,133 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags:
+  - Death
+  - Trigger
+  - Ramp
+  - ObstacleOnRight
+  - ObstacleOnLeft
+  - Asset
+  - AcreLand
+  - GoldRises
+  - Stock
+  - InterestPayout
+  - Deposit
+  - InflationHits
+  - Antique
+  - BorrowMoney
+  - Anniversary
+  - BirthdayParty
+  - Coffee
+  - Phone
+  - RepaintHouse
+  - Watch
+  - Clothes
+  - Shoes
+  - Dentist
+  - Casino
+  - Dinner
+  - CarRepair
+  - Movie
+  - Hospital
+  - Charity
+  - ShoppingCart
+  - Vacation
+  - Baby
+  - Wine
+  - BorrowHits
+  - InflationMoney
+  - CashCounter
+  - Repair
+  - Lottery
+  - file
+  - MissedFileTrigger
+  - Job
+  - Audio
+  - MutualRises
+  - MutualFalls
+  - CryptoRises
+  - CryptoFalls
+  - RealEstate
+  - Physical
+  - PhysicalToLeft
+  - PhysicalToRight
+  - PhysicalBackRightEmpty
+  - PhysicalBackLeftEmpty
+  - PBLE
+  - PBRE
+  - Pothole
+  - Health
+  - Tut1
+  - Tut2
+  - Tut3
+  - Tut4
+  - Tut5
+  - Tut6
+  - Tut7
+  - Tut8
+  - Tut9
+  - Tut10
+  - Tut11
+  - Tut12
+  - Tut13
+  - Tut14
+  - Tut15
+  - Tut16
+  - Tut17
+  - add_jump
+  - substract_jump
+  - normal_jump
+  - Greater_Gravity
+  - Normal_Gravity
+  - PauseBtn
+  - MainCameraFollow
+  - TutorialCameraFollow
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Ground
+  - Water
+  - UI
+  - CharacterSelection
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  m_RenderingLayers:
+  - Default
+  - Light Layer 1
+  - Light Layer 2
+  - Light Layer 3
+  - Light Layer 4
+  - Light Layer 5
+  - Light Layer 6
+  - Light Layer 7

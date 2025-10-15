@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2043b0ecab316244aac8bf264d7f1066, type: 3}
+  m_Name: Ori_Boy
+  m_EditorClassIdentifier: 
+  characterName: OriBoy
+  menuCharacter: {fileID: 2183129658815579684, guid: ec25cbbda3aa3f445aabf27713043a7f,
+    type: 3}
+  gameCharacter: {fileID: 2495327624220003017, guid: 7fff1ba23635fc243bdd620562829e6b,
+    type: 3}
+  tutorialCharacter: {fileID: 2541696886425571045, guid: 5e610827adb3ffd4385419546dc2200d,
+    type: 3}
+  positionTarget: {fileID: 6235622179894261848, guid: 05be369a3c1608f4f8b76f2864b8da0f,
+    type: 3}

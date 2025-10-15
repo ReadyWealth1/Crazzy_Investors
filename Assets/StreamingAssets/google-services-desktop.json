@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "767309357697",
+    "firebase_url": "https://investors-run-pune-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "investors-run-pune",
+    "storage_bucket": "investors-run-pune.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:767309357697:android:87d3b36e2f4f2d2573a380",
+        "android_client_info": {
+          "package_name": "com.readywealth.investorsrunpune"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "767309357697-uf5ereskjfo8dpn7eilbfp3ocfi6iiu7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.readywealth.investorsrunpune",
+            "certificate_hash": "5337ad930f402a174bb7e5e4fd775dbb9ecbd213"
+          }
+        },
+        {
+          "client_id": "767309357697-39uqnqkjg1ip5nhnq4i5vjd9ekpuge4a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEpcoKAef3g_5bGP76wFdo3LN7KYtFcUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "767309357697-39uqnqkjg1ip5nhnq4i5vjd9ekpuge4a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
