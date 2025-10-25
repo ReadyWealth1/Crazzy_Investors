@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using com.jiogames.wrapper;
 
 namespace Jio.SampleGame
 {
@@ -24,18 +23,18 @@ namespace Jio.SampleGame
 
         }
 
-        private void Start()
+      /*  private void Start()
         {
             mainScreen.SetActive(true);
 
             JioWrapperJS.Instance?.loadBanner();
             StartCoroutine(BannerShow());
-        }
+        }*/
 
         IEnumerator BannerShow(){
             yield return new WaitForSeconds(5);
             Debug.Log("Unity BannerShow");
-            JioWrapperJS.Instance?.showBanner();
+            //JioWrapperJS.Instance?.showBanner();
         }
     }
 }

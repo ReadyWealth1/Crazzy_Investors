@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using com.jiogames.wrapper;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -222,7 +221,7 @@ public class Assets : MonoBehaviour
             Character.isGameStart = true;
             HighScoreManager.scoreCount = 0;
             Debug.Log("This will run only once!");
-            JioWrapperJS.Instance.cacheInterstitial();
+          //  JioWrapperJS.Instance.cacheInterstitial();
             
             
         }

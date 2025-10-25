@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Permissions;
-using com.jiogames.wrapper;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -80,7 +79,7 @@ public class Toast : MonoBehaviour
     {
         CloseAdsPopup();
         PlayerPrefs.SetInt("HomeRewardBtnClick", 1);
-        JioWrapperJS.Instance.showRewarded();
+       // JioWrapperJS.Instance.showRewarded();
         // IronSourceAdsManager.instance.ShowRewarded();
     }
   public void ShowBoyPopup()

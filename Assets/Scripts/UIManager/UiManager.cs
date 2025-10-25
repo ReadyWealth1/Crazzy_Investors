@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using com.jiogames.wrapper;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
@@ -48,7 +47,7 @@ public class UiManager : MonoBehaviour
         }*/
 
     }
-    public void Update()
+   /* public void Update()
     {
         if(JioWrapperJS.Instance.IsRVReady == true)
         {
@@ -61,7 +60,7 @@ public class UiManager : MonoBehaviour
             adsButton.interactable = false;
             adsButtonToast.interactable = false;
         }
-    }
+    }*/
 
     public void UpdateNameText(string name)
     {

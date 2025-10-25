@@ -8,7 +8,7 @@ using static GameManager;
 using UnityEngine.UI;
 using EZCameraShake;
 using JetBrains.Annotations;
-using com.jiogames.wrapper;
+//using com.jiogames.wrapper;
 using DG.Tweening.Core.Easing;
 
 
@@ -1541,9 +1541,9 @@ public class Character : MonoBehaviour
         //gameOverVideoPlayer.gameOverUI.SetActive(true);
         yield return new WaitForSeconds(1);
         // IronSourceAdsManager.instance.ShowInterstitial();
-        JioWrapperJS.Instance.postScore(PlayerPrefs.GetInt("CurrentScore"));
+        //JioWrapperJS.Instance.postScore(PlayerPrefs.GetInt("CurrentScore"));
         Debug.Log(PlayerPrefs.GetInt("CurrentScore")+"===========Current Score ");
-        JioWrapperJS.Instance.showInterstitial();
+       // JioWrapperJS.Instance.showInterstitial();
             
         // Directly activate the game over UI
     }

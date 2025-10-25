@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using com.jiogames.wrapper;
 
 namespace Jio.SampleGame
 {

@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using com.jiogames.wrapper;
 
 public class TestScript : MonoBehaviour
 {
-    private void OnEnable()
+ /*   private void OnEnable()
     {
         JioWrapperJS.Instance.GratifyRewards.AddListener(GratifyRewards);
     }
@@ -13,7 +12,7 @@ public class TestScript : MonoBehaviour
     {
         JioWrapperJS.Instance.GratifyRewards.RemoveListener(GratifyRewards);
     }
-
+*/
 
     /// <summary>
     /// Gratify your rewards here.

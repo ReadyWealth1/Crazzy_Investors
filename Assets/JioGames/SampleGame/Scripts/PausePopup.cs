@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using com.jiogames.wrapper;
 
 namespace Jio.SampleGame
 {
@@ -18,11 +17,11 @@ namespace Jio.SampleGame
                 imgSound.sprite = AudioManager.Instance.spzSoundOff;
             }
 
-            JioWrapperJS.Instance.hideBanner();
+            //JioWrapperJS.Instance.hideBanner();
         }
 
         private void OnDisable() {
-            JioWrapperJS.Instance.showBanner();    
+            //JioWrapperJS.Instance.showBanner();    
         }
 
         public void OnClick_Resume(){
@@ -41,7 +40,7 @@ namespace Jio.SampleGame
             UIManager.Instance.gameplayScreen.SetActive(false);
             UIManager.Instance.mainScreen.SetActive(true);
 
-            JioWrapperJS.Instance.showInterstitial();
+         //   JioWrapperJS.Instance.showInterstitial();
         }
         public void OnClick_SoundOnOff()
         {

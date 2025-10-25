@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.TextCore.Text;
-using com.jiogames.wrapper;
 using DG.Tweening.Core.Easing;
 
 public class GameStartManager : MonoBehaviour

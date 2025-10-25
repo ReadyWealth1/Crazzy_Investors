@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using DG.Tweening;
-using com.jiogames.wrapper;
 
 namespace Jio.SampleGame
 {
@@ -45,7 +44,7 @@ namespace Jio.SampleGame
             scoreText.text = "Score : " + localScore;
 
             // This initialize for gettting after the RV
-            JioWrapperJS.Instance.GratifyRewards.AddListener(GratifyRewards);
+            //JioWrapperJS.Instance.GratifyRewards.AddListener(GratifyRewards);
 
             Reset();
 
@@ -95,7 +94,7 @@ namespace Jio.SampleGame
         {
             que.GetChild(ansPos).GetComponent<Animation>().Stop();
             CancelInvoke();
-            JioWrapperJS.Instance?.GratifyRewards.RemoveListener(GratifyRewards);
+            //JioWrapperJS.Instance?.GratifyRewards.RemoveListener(GratifyRewards);
         }
 
         void Timer()
@@ -189,7 +188,7 @@ namespace Jio.SampleGame
         public void OnClick_YES()
         {
             AudioManager.Instance.Audio_ButtonPress();
-            JioWrapperJS.Instance.showRewarded();
+            //JioWrapperJS.Instance.showRewarded();
         }
 
         public void OnClick_NO()
