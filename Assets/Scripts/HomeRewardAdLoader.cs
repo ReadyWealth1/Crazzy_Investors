@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using com.jiogames.wrapper;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,18 +13,12 @@ public class HomeRewardAdLoader : MonoBehaviour
         StartCoroutine(InitAfterDelay());
     }
 
-    private void OnDisable()
-    {
-        if (JioWrapperJS.Instance != null)
-        {
-            JioWrapperJS.Instance.GratifyRewards.RemoveListener(OnRewardAdClosed);
-        }
-    }
+ 
 
     private IEnumerator InitAfterDelay()
     {
         yield return new WaitForSeconds(0.5f); // Wait to ensure JioWrapperJS is ready
-
+/*
         if (JioWrapperJS.Instance != null)
         {
             JioWrapperJS.Instance.GratifyRewards.AddListener(OnRewardAdClosed);
@@ -33,17 +27,17 @@ public class HomeRewardAdLoader : MonoBehaviour
         else
         {
             Debug.LogWarning("HomeRewardAdLoader: JioWrapperJS.Instance is null after delay.");
-        }
+        }*/
     }
 
     private void LoadRewardedAdIfNeeded()
-    {
+    {/*
         if (!JioWrapperJS.Instance.IsRVReady && !hasRequestedReward)
         {
             hasRequestedReward = true;
             JioWrapperJS.Instance.cacheRewarded();
             Debug.Log("HomeRewardAdLoader: Rewarded ad caching requested.");
-        }
+        }*/
     }
 
     private void OnRewardAdClosed()
