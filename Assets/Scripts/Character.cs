@@ -8,8 +8,7 @@ using static GameManager;
 using UnityEngine.UI;
 using EZCameraShake;
 using JetBrains.Annotations;
-//using com.jiogames.wrapper;
-using DG.Tweening.Core.Easing;
+using com.jiogames.wrapper;
 
 
 [System.Serializable]
@@ -42,7 +41,7 @@ public class Character : MonoBehaviour
     public HitX hitX = HitX.None;
     public HitY hitY = HitY.None;
     public HitZ hitZ = HitZ.None;
-    public static bool isDead = false;
+    public bool isDead = false;
     public bool isWarningShown = false;
     public GameManager gameOverInstance;
     public static bool StopAllState = false;
@@ -99,9 +98,9 @@ public class Character : MonoBehaviour
     private HighScoreManager highScoreManager;
 
     private LotteryManager lotteryManager;
-    public Vector3 startPosition = new Vector3(0, 0, 0);
-    private int PopUpX = 150; 
-    private int PopUpY =800;
+    public Vector3 startPosition;
+    private int PopUpX = 600;
+    private int PopUpY = 2450;
     private int PopUpZ = 0;
     //public GameOverVideoPlayer gameOverVideoPlayer;
 
@@ -128,7 +127,7 @@ public class Character : MonoBehaviour
     private Coroutine increaseExpenseCoroutine;
     private bool GreaterGravity = false;
     public static bool GameStarted = false;
-    public static bool isGameStart = false;
+
 
 
 
@@ -144,14 +143,13 @@ public class Character : MonoBehaviour
 
     void Start()
     {
-        Time.timeScale = 0.2f;
         PhysicalExpense = 0.2f;
         increaseExpenseCoroutine = StartCoroutine(IncreasePhysicalExpenseOverTime());
         /*cameraTransform = GameObject.FindWithTag("MainCamera").transform;
         originalPosCam = cameraTransform.position;*/
-  
+
         transform.position = Vector3.zero;
-        startPosition = Vector3.zero;
+        startPosition = transform.position;
 
         m_Animator = GetComponent<Animator>();
         m_char = GetComponent<CharacterController>();
@@ -162,7 +160,7 @@ public class Character : MonoBehaviour
         }
         if (popupManager == null)
         {
-            popupManager = FindFirstObjectByType<TMPPopupManager>();
+            popupManager = FindObjectOfType<TMPPopupManager>();
         }
 
         if (m_Side == SIDE.Mid)
@@ -174,7 +172,7 @@ public class Character : MonoBehaviour
         CanInput = false;
         PlayAnimation("Idle");
 
-        lotteryManager = FindFirstObjectByType<LotteryManager>();
+        lotteryManager = FindObjectOfType<LotteryManager>();
 
         if (lotteryManager == null)
         {
@@ -215,23 +213,14 @@ public class Character : MonoBehaviour
     {
         GameStarted = true;
         Time.timeScale = 1f;
-       
         //yield return new WaitForSeconds(10f); // Adjust the delay as needed
         CanInput = true;
         PlayAnimation("run");
     }
     private void Awake()
     {
-        // Already finding highScoreManager here — add reset logic too
-        highScoreManager = FindFirstObjectByType<HighScoreManager>();
-
-        // ✅ Reset all run-state variables for fresh start
-        isDead = false;
-        StopAllState = false;
-        CanInput = false; // stays false until StartRunning()
-        m_Animator = GetComponent<Animator>();
         // Find the HighScoreManager instance in the scene during the Awake phase
-        highScoreManager = FindFirstObjectByType<HighScoreManager>();
+        highScoreManager = FindObjectOfType<HighScoreManager>();
     }
 
     void Update()
@@ -328,7 +317,7 @@ public class Character : MonoBehaviour
         Roll();
 
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
-        GameOver();
+        DeathByCoins();
 
         /* if (isFlying)
          {
@@ -558,7 +547,6 @@ public class Character : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (isDead || StopAllState ) return;
         switch (other.tag)// MUTUAL FUNDS ,CRYPTO CURRENCY,ARTIFACTS, real estate. make real estate office space like, and for mutual funds too make a 3d object like
         {
             case "Health":
@@ -762,26 +750,13 @@ public class Character : MonoBehaviour
         Destroy(other.gameObject);
     }
 
-    private void OnEnable()
-    {
-        GameManager.OnGameOver += StopHealthSlider;
-    }
-    private void OnDisable()
-    {
-        GameManager.OnGameOver -= StopHealthSlider;
-    }
-    private void StopHealthSlider()
-    {
-        isHealthInsuranceActive = false;
-    }
     private IEnumerator DepleteHealthOverTime()
     {
         float elapsedTime = 0f;
         float startValue = healthSlider.value;
 
-        while (elapsedTime < powerUpDuration && isHealthInsuranceActive)
+        while (elapsedTime < powerUpDuration)
         {
-
             elapsedTime += Time.deltaTime;
             healthSlider.value = Mathf.Lerp(startValue, 0f, elapsedTime / powerUpDuration);
             yield return null;
@@ -802,27 +777,19 @@ public class Character : MonoBehaviour
         GameManager.numberOfCoins += HandleRealEstateValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleRealEstateValue);
 
-        popupManager.ShowPopup($"+{HandleRealEstateValue}", Color.green, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"+{HandleRealEstateValue}", Color.green, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
     private void HandleAntique(Collider other)
     {
-        HandleAntiqueValue = Random.Range(
-            (int)(Assets.AntiquePortfolio * -0.08f),
-            (int)(Assets.AntiquePortfolio * 0.3f) + 1
-        );
+        HandleAntiqueValue = Random.Range((int)(Assets.AntiquePortfolio * -0.08f), (int)(Assets.AntiquePortfolio * 0.3f) + 1); // 10 percent of the current number of coins Random.Range((int)(Assets.AntiquePortfolio  * 0.08f), (int)(Assets.AntiquePortfolio  * 0.3f) + 1);
+        GameManager.numberOfCoins -= HandleAntiqueValue;
+        string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleAntiqueValue);
 
-        GameManager.numberOfCoins += HandleAntiqueValue;
-
-        string formattedValue = NumberFormatter.FormatNumberIndianSystem(Mathf.Abs(HandleAntiqueValue));
-        string sign = HandleAntiqueValue >= 0 ? "+" : "-";
-        Color popupColor = HandleAntiqueValue >= 0 ? Color.green : Color.red;
-
-        popupManager.ShowPopup($"{sign}{formattedValue}", popupColor, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"+{HandleAntiqueValue}", Color.green, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
-
     private void HandleMutualFalls(Collider other)
     {
         /*HandleMutualFallsValue = (int)(Assets.MutualFundsPortfolio * 0.04f); // 10 percent of the current number of coins
@@ -842,7 +809,7 @@ public class Character : MonoBehaviour
         string sign = HandleMutualRisesValue >= 0 ? "+" : "-";
         Color popupColor = HandleMutualRisesValue >= 0 ? Color.green : Color.red;
 
-        popupManager.ShowPopup($"{sign}{formattedValue}", popupColor, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"{sign}{formattedValue}", popupColor, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
     private void HandleMutualRises(Collider other)
@@ -858,7 +825,7 @@ public class Character : MonoBehaviour
         string sign = HandleMutualRisesValue >= 0 ? "+" : "-";
         Color popupColor = HandleMutualRisesValue >= 0 ? Color.green : Color.red;
 
-        popupManager.ShowPopup($"{sign}{formattedValue}", popupColor, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"{sign}{formattedValue}", popupColor, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -869,7 +836,7 @@ public class Character : MonoBehaviour
         GameManager.numberOfCoins -= HandleCryptoFallsValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleCryptoFallsValue);
         totalExpenseAmount += HandleCryptoFallsValue;
-        popupManager.ShowPopup($"-{HandleCryptoFallsValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleCryptoFallsValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -879,7 +846,7 @@ public class Character : MonoBehaviour
         GameManager.numberOfCoins += HandleCryptoRisesValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleCryptoRisesValue);
 
-        popupManager.ShowPopup($"+{HandleCryptoRisesValue}", Color.green, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"+{HandleCryptoRisesValue}", Color.green, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -894,13 +861,13 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-       //CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         GameManager.numberOfCoins -= HandleRepairValue;
 
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleRepairValue);
         totalExpenseAmount += HandleRepairValue;
 
-        popupManager.ShowPopup($"-{formattedRepairValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{formattedRepairValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
 
         Destroy(other.gameObject);
     }
@@ -917,13 +884,13 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-       // CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         // StartShaking();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleDinnerValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleDinnerValue);
         totalExpenseAmount += HandleDinnerValue;
-        popupManager.ShowPopup($"-{HandleDinnerValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleDinnerValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -936,7 +903,7 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-       // CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         // StartShaking();     // Check if the health insurance power-up is active
         if (isHealthInsuranceActive)
         {
@@ -960,7 +927,7 @@ public class Character : MonoBehaviour
             // Subtract the full hospital value
             GameManager.numberOfCoins -= HandleHospitalValue;
             string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleHospitalValue);
-            popupManager.ShowPopup($"-{HandleHospitalValue}", Color.red, new Vector2(PopUpX, PopUpY));
+            popupManager.ShowPopup($"-{HandleHospitalValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         }
 
         // Format and display the deducted value
@@ -979,14 +946,14 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-        //CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         //  //Handheld.Vibrate();();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleWineValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleWineValue);
         totalExpenseAmount += HandleWineValue;
-        popupManager.ShowPopup($"-{HandleWineValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleWineValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -998,14 +965,14 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-        //CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         // //Handheld.Vibrate();();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleBabyValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleBabyValue);
         totalExpenseAmount += HandleBabyValue;
-        popupManager.ShowPopup($"-{HandleBabyValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleBabyValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1018,13 +985,13 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-        //CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleShoppingCartValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleShoppingCartValue);
         totalExpenseAmount += HandleShoppingCartValue;
-        popupManager.ShowPopup($"-{HandleShoppingCartValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleShoppingCartValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1038,14 +1005,14 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-        //CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         // StartShaking();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleVacationValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleVacationValue);
         totalExpenseAmount += HandleVacationValue;
 
-        popupManager.ShowPopup($"-{HandleVacationValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleVacationValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1058,14 +1025,14 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-       // CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         // StartShaking();
         //Handheld.Vibrate();();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleCasinoValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleCasinoValue);
         totalExpenseAmount += HandleCasinoValue;
-        popupManager.ShowPopup($"-{HandleCasinoValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleCasinoValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1075,7 +1042,7 @@ public class Character : MonoBehaviour
         GameManager.numberOfCoins += HandleGoldRisesValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleGoldRisesValue);
 
-        popupManager.ShowPopup($"+{HandleGoldRisesValue}", Color.green, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"+{HandleGoldRisesValue}", Color.green, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1085,28 +1052,20 @@ public class Character : MonoBehaviour
         GameManager.numberOfCoins += HandleAcreLandValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleAcreLandValue);
 
-        popupManager.ShowPopup($"+{HandleAcreLandValue}", Color.green, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"+{HandleAcreLandValue}", Color.green, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
 
     private void HandleStock(Collider other)
     {
-        HandleStockValue = Random.Range(
-            (int)(Assets.StockPortfolio * -0.2f),
-            (int)(Assets.StockPortfolio * 0.2f) + 1
-        );
-
+        HandleStockValue = Random.Range((int)(Assets.StockPortfolio * -0.2f), (int)(Assets.StockPortfolio * 0.2f) + 1);
         GameManager.numberOfCoins += HandleStockValue;
+        string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleStockValue);
 
-        string formattedValue = NumberFormatter.FormatNumberIndianSystem(Mathf.Abs(HandleStockValue));
-        string sign = HandleStockValue >= 0 ? "+" : "-";
-        Color popupColor = HandleStockValue >= 0 ? Color.green : Color.red;
-
-        popupManager.ShowPopup($"{sign}{formattedValue}", popupColor, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"+{HandleStockValue}", Color.green, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
-
 
     private void HandleDeposit(Collider other)
     {
@@ -1114,7 +1073,7 @@ public class Character : MonoBehaviour
         GameManager.numberOfCoins += HandleDepositValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleDepositValue);
 
-        popupManager.ShowPopup($"+{HandleDepositValue}", Color.green, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"+{HandleDepositValue}", Color.green, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1124,7 +1083,7 @@ public class Character : MonoBehaviour
         GameManager.numberOfCoins += HandleInterestPayoutValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleInterestPayoutValue);
 
-        popupManager.ShowPopup($"+{HandleInterestPayoutValue}", Color.green, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"+{HandleInterestPayoutValue}", Color.green, new Vector3(PopUpX, PopUpY, PopUpZ));
 
         Destroy(other.gameObject);
     }
@@ -1138,7 +1097,7 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-        //CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         //Handheld.Vibrate();();
         PlayAnimation("HitOnHead");
@@ -1146,7 +1105,7 @@ public class Character : MonoBehaviour
 
         GameManager.numberOfCoins -= HandleBorrowHitsValue;
         totalExpenseAmount += HandleBorrowHitsValue;
-        popupManager.ShowPopup($"-{HandleBorrowHitsValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleBorrowHitsValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
 
         Destroy(other.gameObject);
     }
@@ -1161,13 +1120,13 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-       // CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleInflationMoneyValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleInflationMoneyValue);
         totalExpenseAmount += HandleInflationMoneyValue;
-        popupManager.ShowPopup($"-{HandleInflationMoneyValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleInflationMoneyValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
 
         Destroy(other.gameObject);
     }
@@ -1180,14 +1139,14 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-        //CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         //Handheld.Vibrate();();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleBirthdayPartyValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleBirthdayPartyValue);
         totalExpenseAmount += HandleBirthdayPartyValue;
-        popupManager.ShowPopup($"-{HandleBirthdayPartyValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleBirthdayPartyValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1199,14 +1158,14 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-       // CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         // StartShaking();
         //Handheld.Vibrate();();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleAnniversaryValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleAnniversaryValue);
         totalExpenseAmount += HandleAnniversaryValue;
-        popupManager.ShowPopup($"-{HandleAnniversaryValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleAnniversaryValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1218,14 +1177,14 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-      //  CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         //Handheld.Vibrate();();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleCoffeeValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleCoffeeValue);
         totalExpenseAmount += HandleCoffeeValue;
-        popupManager.ShowPopup($"-{HandleCoffeeValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleCoffeeValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1237,14 +1196,14 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-       // CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         //Handheld.Vibrate();();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleRepaintHouseValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleRepaintHouseValue);
         totalExpenseAmount += HandleRepaintHouseValue;
-        popupManager.ShowPopup($"-{HandleRepaintHouseValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleRepaintHouseValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1257,14 +1216,14 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-        //CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         //Handheld.Vibrate();();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandlePhoneValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandlePhoneValue);
         totalExpenseAmount += HandlePhoneValue;
-        popupManager.ShowPopup($"-{HandlePhoneValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandlePhoneValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1279,13 +1238,13 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-       // CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleWatchValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleWatchValue);
         totalExpenseAmount += HandleWatchValue;
-        popupManager.ShowPopup($"-{HandleWatchValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleWatchValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1298,14 +1257,14 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-       // CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         //Handheld.Vibrate();();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleClothesValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleClothesValue);
         totalExpenseAmount += HandleClothesValue;
-        popupManager.ShowPopup($"-{HandleClothesValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleClothesValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1317,14 +1276,14 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-        //CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         //Handheld.Vibrate();();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleMovieValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleMovieValue);
         totalExpenseAmount += HandleMovieValue;
-        popupManager.ShowPopup($"-{HandleMovieValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleMovieValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1336,14 +1295,14 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-        //CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         //Handheld.Vibrate();();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleShoesValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleShoesValue);
 
-        popupManager.ShowPopup($"-{HandleShoesValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleShoesValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1356,7 +1315,7 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-        //CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         //Handheld.Vibrate();();
         PlayAnimation("HitOnHead");
@@ -1368,10 +1327,10 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-        //CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         totalExpenseAmount += HandlePotholeValue;
-        popupManager.ShowPopup($"-{HandlePotholeValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandlePotholeValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         // Destroy(other.gameObject);
     }
     private void HandleDentist(Collider other)
@@ -1382,7 +1341,7 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-        //CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         //Handheld.Vibrate();();
         PlayAnimation("HitOnHead");
@@ -1393,11 +1352,11 @@ public class Character : MonoBehaviour
         {
             //HapticFeedback.HeavyFeedback();
         }
-        //CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
 
         totalExpenseAmount += HandleDentistValue;
-        popupManager.ShowPopup($"-{HandleDentistValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleDentistValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
 
@@ -1409,14 +1368,14 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-        //CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         //Handheld.Vibrate();();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleCarRepairValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleCarRepairValue);
         totalExpenseAmount += HandleCarRepairValue;
-        popupManager.ShowPopup($"-{HandleCarRepairValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleCarRepairValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
     private void HandleCharity(Collider other)
@@ -1430,13 +1389,13 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-       // CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         PlayAnimation("HitOnHead");
         GameManager.numberOfCoins -= HandleCharityValue;
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandleCharityValue);
         totalExpenseAmount += HandleCharityValue;
-        popupManager.ShowPopup($"-{HandleCharityValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandleCharityValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
         Destroy(other.gameObject);
     }
     public void HandlePhysicalHit(Collider other)
@@ -1471,7 +1430,7 @@ public class Character : MonoBehaviour
             //HapticFeedback.HeavyFeedback();
             WebGLVibration.VibrateDevice(200);
         }
-       // CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
+        CameraShaker.Instance.ShakeOnce(4f, 4f, .1f, 1f);
         //StartShaking();
         // PlayAnimation("HitOnHead");
     }
@@ -1484,7 +1443,7 @@ public class Character : MonoBehaviour
         string formattedRepairValue = NumberFormatter.FormatNumberIndianSystem(HandlePhysicalHitValue);
 
 
-        popupManager.ShowPopup($"-{HandlePhysicalHitValue}", Color.red, new Vector2(PopUpX, PopUpY));
+        popupManager.ShowPopup($"-{HandlePhysicalHitValue}", Color.red, new Vector3(PopUpX, PopUpY, PopUpZ));
 
         // Reset the flag after deduction
         hasHitPhysicalObject = false;
@@ -1504,18 +1463,17 @@ public class Character : MonoBehaviour
 
 
 
-    private void GameOver()
+    private void DeathByCoins()
     {
         if (GameManager.numberOfCoins <= 0 && GameManager.First_Zero == false)
         {
             TotalLoss = totalInflationCut + totalExpenseAmount;
             isDead = true;
             isWarningShown = true;
+            PlayAnimation("defeated");
 
-            StartCoroutine(DeathPlayer("defeated"));
-
-            StartCoroutine(ShowGameOverScreenAfterDelay(0.3f));
-            CoinsOverText.gameObject.SetActive(true);   
+            StartCoroutine(ShowGameOverScreenAfterDelay(1f));
+            CoinsOverText.gameObject.SetActive(true);
             GameOverAnimator.SetTrigger("Over");
 
             if (highScoreManager != null)
@@ -1523,7 +1481,6 @@ public class Character : MonoBehaviour
                 highScoreManager.CheckForHighScore();
             }
             highScoreManager.UpdateGameOverUI();
-            
             totalExpensesHitText.text = "" + totalExpensesHit;
             totalExpenseAmountText.text = "" + NumberFormatter.FormatNumberIndianSystem(totalExpenseAmount);
             TotalLossText.text = "" + NumberFormatter.FormatNumberIndianSystem(TotalLoss);
@@ -1541,15 +1498,14 @@ public class Character : MonoBehaviour
         //gameOverVideoPlayer.gameOverUI.SetActive(true);
         yield return new WaitForSeconds(1);
         // IronSourceAdsManager.instance.ShowInterstitial();
-        //JioWrapperJS.Instance.postScore(PlayerPrefs.GetInt("CurrentScore"));
-        Debug.Log(PlayerPrefs.GetInt("CurrentScore")+"===========Current Score ");
-       // JioWrapperJS.Instance.showInterstitial();
-            
+        JioWrapperJS.Instance.showInterstitial();
+        JioWrapperJS.Instance.cacheAd();
         // Directly activate the game over UI
     }
 
     public void ResetCharacter()
     {
+
         transform.position = startPosition;
         GameManager.numberOfCoins = 1000000;
         m_Side = SIDE.Mid;
@@ -1560,20 +1516,11 @@ public class Character : MonoBehaviour
         SwipeDown = false;
         InJump = false;
         InRoll = false;
-
-        // ✅ Reset death & state locks
         isDead = false;
         StopAllState = false;
         CanInput = true;
 
-        GameManager.isGameOver = false;
-       // Debug.Log(isGameOver + "1 isGameOver = false====");
-        // Optional: Reset forward speed
-        FwdSpeed = StartingSpeed;
-
-        m_char.enabled = true; // if you disabled it at death
     }
-
 
     // for physical hit
     public void OnTriggerEnterPhysicalRight(Collider other)
@@ -1646,10 +1593,8 @@ public class Character : MonoBehaviour
 
     private bool hasChangedSide = false;
 
-
     public void OnTriggerStay(Collider other)
     {
-        if (isDead || StopAllState) return;
 
 
         if (!isFlying && other.CompareTag("PBRE") && !hasChangedSide)
@@ -1719,10 +1664,6 @@ public class Character : MonoBehaviour
         else if (!InRoll)
             PlayAnimation(animation);
     }
-    public void isButtonClicking()
-    {
-        Debug.Log("PortOff Btn is clicked");
-    }
     /*public void OnTriggerEnterPhysicalBackLefttEmpty(Collider other)
     {
         {
@@ -1743,7 +1684,7 @@ public class Character : MonoBehaviour
                     }
                     else if (m_Side == SIDE.Right)
                     {
-                        // Move to the middle lane from the right  
+                        // Move to the middle lane from the right
                         NewXPos = 0;
                         m_Side = SIDE.Mid;
                         if (InJump)

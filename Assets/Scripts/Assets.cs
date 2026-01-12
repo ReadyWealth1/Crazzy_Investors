@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class Assets : MonoBehaviour
 {
@@ -162,7 +161,7 @@ public class Assets : MonoBehaviour
     private int antiquePurchases = 0;
     private int mutualFundsPurchases = 0;
     private int landPurchases = 0;
-    [SerializeField] HighScoreManager HighScoreManager;
+
     public static bool isPortfolioZero = false;
     void Start()
     {
@@ -214,17 +213,7 @@ public class Assets : MonoBehaviour
     }
     public void Char_buy_Something()
     {
-
         Character.StartRunning();
-        if (!Character.isGameStart)
-        {
-            Character.isGameStart = true;
-            HighScoreManager.scoreCount = 0;
-            Debug.Log("This will run only once!");
-          //  JioWrapperJS.Instance.cacheInterstitial();
-            
-            
-        }
     }
 
     public void ResetAsset()
@@ -365,7 +354,7 @@ public class Assets : MonoBehaviour
         UpdateTotalPortfolioValue();
         UpdateTotalPassiveIncome();
         UpdateUI();
-        
+        AudioManager.instance.PlaySFX(AudioManager.instance.Buy_sound);
         isPortfolioZero = true;
 
 
@@ -410,7 +399,6 @@ public class Assets : MonoBehaviour
 
         if (GameManager.numberOfCoins >= cost)
         {
-            AudioManager.instance.PlaySFX(AudioManager.instance.Buy_sound);
             GameManager.numberOfCoins -= cost;
             lastPurchasedAssetCost = cost;
 
@@ -524,7 +512,6 @@ public class Assets : MonoBehaviour
         {
             Debug.Log("Not enough coins to buy asset");
         }
-      
         PauseMenu.instance.Resume();
     }
 
@@ -536,7 +523,7 @@ public class Assets : MonoBehaviour
         // Perform other actions as needed
         // For example:
         // Update UI elements, show asset details, etc.
-        Assets assetManager = Object.FindFirstObjectByType<Assets>();
+        Assets assetManager = FindObjectOfType<Assets>();
         if (!Assets.first_canvasShown)
         {
             assetManager.ShowAssetCanvasWithCurrentValues();
@@ -544,7 +531,7 @@ public class Assets : MonoBehaviour
             CameraFollow.followSpeed = 1f;
 
             // Start lerping distanceBehind to -0.27f over 2 seconds
-            CameraFollow cameraFollow = Object.FindFirstObjectByType<CameraFollow>();
+            CameraFollow cameraFollow = FindObjectOfType<CameraFollow>();
             // cameraFollow.StartCoroutine(CameraFollow.LerpDistanceBehind(6f, 7f));
 
             Character.PlayAnimation("run");
@@ -707,7 +694,7 @@ public class Assets : MonoBehaviour
         CanvasShown = false;
 
         // Get the reference to the Character script
-        Character character = Object.FindFirstObjectByType<Character>();
+        Character character = FindObjectOfType<Character>();
         if (character != null)
         {
             if (Character.isFlying)

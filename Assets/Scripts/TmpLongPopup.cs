@@ -4,37 +4,12 @@ using TMPro;
 
 public class TmpLongPopup : MonoBehaviour
 {
-    [Header("Popup Settings")]
     public GameObject popupPrefab;
 
-    [Header("Animation Settings")]
-    public float floatHeight = 100f;
-    public float duration = 5f;      // Long duration
-    public float startDelay = 0.1f;
-
-    private Canvas _parentCanvas;
-
-    void Awake()
+    public void ShowPopup(string text, Color color, Vector3 position)
     {
-        _parentCanvas = GetComponentInParent<Canvas>();
-        if (_parentCanvas == null)
-        {
-            Debug.LogError($"{name}: No parent Canvas found! Popups may not display correctly.", this);
-        }
-    }
-
-    /// <summary>
-    /// Shows a popup at a canvas position with text, color, and float/fade animation.
-    /// </summary>
-    public void ShowPopup(string text, Color color, Vector2 canvasPosition)
-    {
-        GameObject popupInstance = Instantiate(popupPrefab, _parentCanvas.transform);
-        RectTransform popupRect = popupInstance.GetComponent<RectTransform>();
-
-        // Set position on Canvas
-        popupRect.anchoredPosition = canvasPosition;
-
-        // Set text and color
+        GameObject popupInstance = Instantiate(popupPrefab, transform);
+        popupInstance.transform.position = position;
         TextMeshProUGUI textMesh = popupInstance.GetComponentInChildren<TextMeshProUGUI>();
         if (textMesh != null)
         {
@@ -42,42 +17,36 @@ public class TmpLongPopup : MonoBehaviour
             textMesh.color = color;
         }
 
-        // Ensure CanvasGroup exists for fading
         CanvasGroup canvasGroup = popupInstance.GetComponent<CanvasGroup>();
         if (canvasGroup == null)
+        {
             canvasGroup = popupInstance.AddComponent<CanvasGroup>();
+        }
 
-        StartCoroutine(FloatAndFade(popupRect, canvasGroup));
+        StartCoroutine(FloatAndFade(popupInstance, canvasGroup));
     }
 
-    private IEnumerator FloatAndFade(RectTransform popupRect, CanvasGroup canvasGroup)
+    private IEnumerator FloatAndFade(GameObject popupInstance, CanvasGroup canvasGroup)
     {
-        // Wait before starting
-        yield return new WaitForSeconds(startDelay);
+        // Increase this value to make the pop-up visible longer
+        float duration = 5.0f; // Changed from 3.5f to 5.0f
+        float elapsed = -0.5f;
+        Vector3 startPosition = popupInstance.transform.position;
+        Vector3 endPosition = startPosition + Vector3.up * 100.0f;
 
-        Vector2 startPos = popupRect.anchoredPosition;
-        Vector2 endPos = startPos + Vector2.up * floatHeight;
-
-        float startTime = Time.time;
-        float endTime = startTime + duration;
-
-        while (Time.time < endTime)
+        while (elapsed < duration)
         {
-            float t = (Time.time - startTime) / duration;
+            float t = elapsed / duration;
 
-            // Move upward
-            popupRect.anchoredPosition = Vector2.Lerp(startPos, endPos, t);
-
-            // Scale up slightly
+            popupInstance.transform.position = Vector3.Lerp(startPosition, endPosition, t);
             float scale = Mathf.Lerp(1.0f, 1.2f, t);
-            popupRect.localScale = new Vector3(scale, scale, scale);
-
-            // Fade out
+            popupInstance.transform.localScale = new Vector3(scale, scale, scale);
             canvasGroup.alpha = Mathf.Lerp(1.0f, 0.0f, t);
 
+            elapsed += Time.deltaTime;
             yield return null;
         }
 
-        Destroy(popupRect.gameObject);
+        Destroy(popupInstance);
     }
 }

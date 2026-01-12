@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using com.jiogames.wrapper;
 
 namespace Jio.SampleGame
 {
@@ -23,8 +24,7 @@ namespace Jio.SampleGame
             /// <summary>
             ///     Call the MidRoll and RV ad.
             /// </summary>
-            // JioWrapperJS.Instance.cacheAd();
-            //JioWrapperJS.Instance.cacheInterstitial();
+            JioWrapperJS.Instance.cacheAd();
         }
     }
 }

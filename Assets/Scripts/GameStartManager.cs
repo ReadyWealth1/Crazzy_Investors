@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.TextCore.Text;
-using DG.Tweening.Core.Easing;
 
 public class GameStartManager : MonoBehaviour
 {
@@ -13,127 +12,126 @@ public class GameStartManager : MonoBehaviour
     public TextMeshProUGUI selectedCharacterNameText; // Assign in inspector
     public Dictionary<string, string> characterDisplayNames = new Dictionary<string, string>()
 {
-   /* { "boy", "Zen" },
+    { "boy", "Zen" },
     { "girl", "Luna" },
     { "newBoy", "NewZen" },
     { "newGirl", "NewLuna" },
     { "Gwen", "Gwen" },
     { "Witch", "Drucilia" },
-    { "EgyptQueen", "Amelia" },*/
+    { "EgyptQueen", "Amelia" },
     { "Elon", "Melon Tusk" },
-   /* { "MJ", "MJ" },
+    { "MJ", "MJ" },
     { "Hotb", "Sal" },
     { "Hotg", "Ruby" },
-    { "Chubbs", "Chubbs" },*/
+    { "Chubbs", "Chubbs" },
     { "OfficeGirl", "Natasha" },
-   // { "Mansa", "Mansa Musa" }
+    { "Mansa", "Mansa Musa" }
 };
 
     public CharacterViewer characterViewer;
     [Header("Costs for Characters")]
-/*    public int newBoyCost = 1000;
+    public int newBoyCost = 1000;
     public int newGirlCost = 2000;
     public int GwenCost = 3000;
     public int WitchCost = 3000;
-    public int EgyptQueenCost = 3000;*/
+    public int EgyptQueenCost = 3000;
     public int ElonCost = 3000;
- /*   public int MansaCost = 3000;
+    public int MansaCost = 3000;
     public int HotbCost = 3000;
     public int HotgCost = 3000;
     public int MJCost = 3000;
-    public int ChubbsCost = 3000;*/
+    public int ChubbsCost = 3000;
     public int OfficeGirlCost = 3000;
 
     [Header("UI Elements")]
     public GameObject homePageUI;
     public GameObject inGameUI;
     public Button startButton;
-    public bool isfristtimeOpen = false;
+
     [Header("Character Buttons")]
-   /* public Button boyButton;
+    public Button boyButton;
     public Button girlButton;
     public Button newBoyButton;
     public Button newGirlButton;
     public Button GwenButton;
     public Button WitchButton;
-    public Button EgyptQueenButton;*/
+    public Button EgyptQueenButton;
     public Button ElonButton;
- /*   public Button MansaButton;
+    public Button MansaButton;
     public Button HotbButton;
     public Button HotgButton;
     public Button MJButton;
-    public Button ChubbsButton;*/
+    public Button ChubbsButton;
     public Button OfficeGirlButton;
 
 
 
 
     [Header("Menu Characters (Start Menu)")]
-   /* public GameObject boyCharacterMenu;
+    public GameObject boyCharacterMenu;
     public GameObject girlCharacterMenu;
     public GameObject newBoyCharacterMenu;
     public GameObject newGirlCharacterMenu;
     public GameObject GwenCharacterMenu;
     public GameObject WitchCharacterMenu;
-    public GameObject EgyptQueenCharacterMenu;*/
+    public GameObject EgyptQueenCharacterMenu;
     public GameObject ElonCharacterMenu;
-    /*public GameObject MansaCharacterMenu;
+    public GameObject MansaCharacterMenu;
     public GameObject HotbCharacterMenu;
     public GameObject HotgCharacterMenu;
     public GameObject MJCharacterMenu;
-    public GameObject ChubbsCharacterMenu;*/
+    public GameObject ChubbsCharacterMenu;
     public GameObject OfficeGirlCharacterMenu;
 
 
     [Header("In-Game Characters")]
-   /* public GameObject boyCharacterGame;
+    public GameObject boyCharacterGame;
     public GameObject girlCharacterGame;
     public GameObject newBoyCharacterGame;
     public GameObject newGirlCharacterGame;
     public GameObject GwenCharacterGame;
     public GameObject WitchCharacterGame;
-    public GameObject EgyptQueenCharacterGame;*/
+    public GameObject EgyptQueenCharacterGame;
     public GameObject ElonCharacterGame;
-  /*  public GameObject MansaCharacterGame;
+    public GameObject MansaCharacterGame;
     public GameObject HotbCharacterGame;
     public GameObject HotgCharacterGame;
     public GameObject MJCharacterGame;
-    public GameObject ChubbsCharacterGame;*/
+    public GameObject ChubbsCharacterGame;
     public GameObject OfficeGirlCharacterGame;
 
 
     [Header("Tutorial Characters")]
-  /*  public GameObject tutorialBoyCharacter;
+    public GameObject tutorialBoyCharacter;
     public GameObject tutorialGirlCharacter;
     public GameObject tutorialNewBoyCharacter;
     public GameObject tutorialNewGirlCharacter;
     public GameObject tutorialGwenCharacter;
     public GameObject tutorialWitchCharacter;
     public GameObject tutorialEgyptQueenCharacter;
-    */
     public GameObject tutorialElonCharacter;
-/*    public GameObject tutorialMansaCharacter;
+    public GameObject tutorialMansaCharacter;
     public GameObject tutorialHotbCharacter;
     public GameObject tutorialHotgCharacter;
     public GameObject tutorialMJCharacter;
-    public GameObject tutorialChubbsCharacter;*/
+    public GameObject tutorialChubbsCharacter;
     public GameObject tutorialOfficeGirlCharacter;
 
 
     [Header("Character Position Targets")]
-/*    public GameObject boyPositionTarget;
+    public GameObject boyPositionTarget;
     public GameObject girlPositionTarget;
     public GameObject newBoyPositionTarget;
     public GameObject newGirlPositionTarget;
     public GameObject GwenPositionTarget;
     public GameObject WitchPositionTarget;
-    public GameObject EgyptQueenPositionTarget;*/
+    public GameObject EgyptQueenPositionTarget;
     public GameObject ElonPositionTarget;
-  /*  public GameObject MansaPositionTarget;
+    public GameObject MansaPositionTarget;
     public GameObject HotbPositionTarget;
     public GameObject HotgPositionTarget;
     public GameObject MJPositionTarget;
-    public GameObject ChubbsPositionTarget;*/
+    public GameObject ChubbsPositionTarget;
     public GameObject OfficeGirlPositionTarget;
 
 
@@ -171,7 +169,7 @@ public class GameStartManager : MonoBehaviour
     // ADDED: these track which character is currently "viewed" for the single button logic
     public string currentViewedCharacter = "";
     public int currentViewedCharacterCost = 0;
-    private int diamonds ;
+    private int diamonds;
     private bool inHomeScreen = true;
 
     [SerializeField] private Tutorial_Object_Manager tutorialObjectManager;
@@ -227,13 +225,13 @@ public class GameStartManager : MonoBehaviour
         //  cameraFollow = FindAnyObjectByType<CameraFollow>();
         //  mainCameraFollow = GameObject.FindWithTag("MainCamera")?.GetComponent<CameraFollow>();
         //  tutorialCameraFollow = GameObject.FindWithTag("TutorialCameraFollow")?.GetComponent<CameraFollow>();
-        FristtimeOpen();
 
-       
+        if (PlayerPrefs.GetInt("GuestLogin") == 1)
+        {
 
             //  diamonds = DataSaver.Instance.GuestData.diamonds;
             UiManager.Instance.DiamondUpdate(PlayerPrefs.GetInt("UserGems"));
-        
+        }
         //else if (PlayerPrefs.HasKey("GuestLogin"))
         //{
         //    Debug.Log("Game Start manager user id on start: " + DataSaver.Instance.userId);
@@ -244,19 +242,11 @@ public class GameStartManager : MonoBehaviour
         //}
         //character = GetComponent<Character>();
 
-        if (!PlayerPrefs.HasKey("SelectedCharacter"))
-        {
-            PlayerPrefs.SetString("SelectedCharacter", "Elon");
-            PlayerPrefs.SetInt("ElonBought", 1);
-            PlayerPrefs.Save();
-        }
-        string initialChar = PlayerPrefs.GetString("SelectedCharacter", "Elon");
-
+        string initialChar = PlayerPrefs.GetString("SelectedCharacter", "boy");
         if (characterDisplayNames.TryGetValue(initialChar, out string initialName))
         {
             selectedCharacterNameText.text = initialName;
         }
-
 
         if (actionButton != null)
 
@@ -267,10 +257,10 @@ public class GameStartManager : MonoBehaviour
 
         // 2) Update coin text if you have a coinText
 
-       
+
         startButton.onClick.AddListener(StartTutorialCall);
         // 3) Start button logic
-        if (startButton != null)
+        /* if (startButton != null)
          {
              if (PlayerPrefs.GetInt("FirstTimeOpen") == 1)
              {
@@ -280,10 +270,10 @@ public class GameStartManager : MonoBehaviour
              {
                  startButton.onClick.AddListener(StartGame);
              }
-         }
+         }*/
 
         // 4) Set up newGirl & newBoy purchase logic
-     /*   if (newGirlButton != null)
+        if (newGirlButton != null)
         {
             newGirlButton.onClick.AddListener(() => OnThumbnailClicked("newGirl"));
         }
@@ -310,12 +300,12 @@ public class GameStartManager : MonoBehaviour
         if (EgyptQueenButton != null)
         {
             EgyptQueenButton.onClick.AddListener(() => OnThumbnailClicked("EgyptQueen"));
-        }*/
+        }
         if (ElonButton != null)
         {
             ElonButton.onClick.AddListener(() => OnThumbnailClicked("Elon"));
         }
-     /*   if (MansaButton != null)
+        if (MansaButton != null)
         {
             MansaButton.onClick.AddListener(() => OnThumbnailClicked("Mansa"));
         }
@@ -334,7 +324,7 @@ public class GameStartManager : MonoBehaviour
         if (ChubbsButton != null)
         {
             ChubbsButton.onClick.AddListener(() => OnThumbnailClicked("Chubbs"));
-        }*/
+        }
         if (OfficeGirlButton != null)
         {
             OfficeGirlButton.onClick.AddListener(() => OnThumbnailClicked("OfficeGirl"));
@@ -348,14 +338,12 @@ public class GameStartManager : MonoBehaviour
         inGameUI.SetActive(false);
         //StartCoroutine(ShowBannerWithDelay());
         tutorialGameObject.SetActive(false);
-        PlayerPrefs.SetInt("GuestLogin", 1);
+
         // 7) Hide tutorial chars if not needed
         //tutorialBoyCharacter.SetActive(false);
         //
         //
         //tutorialGirlCharacter.SetActive(false);
-
-        PlayerPrefs.SetInt("ElonBought", 1);
 
         // 8) Load whichever character was saved
 
@@ -384,49 +372,26 @@ public class GameStartManager : MonoBehaviour
     }*/
     public void StartTutorialCall()
     {
-      /*  JioWrapperJS.Instance.cacheInterstitial();*/
-
+        Debug.Log("play button call");
         if (PlayerPrefs.GetInt("FirstTimeOpen") == 1)
         {
-           
+            Debug.Log("play StartTutorial true");
             StartTutorial();
             // startButton.onClick.AddListener(StartTutorial);
 
         }
         else
         {
-         
+            Debug.Log("play StartGame true");
             StartGame();
             //startButton.onClick.AddListener(StartGame);
 
         }
     }
-    public void FristtimeOpen()
-    {
-        if(PlayerPrefs.GetInt("isfristtimeOpen")==0)
-        {
-            PlayerPrefs.SetInt("GuestLogin", 1);
-            PlayerPrefs.SetInt("FirstTimeOpen", 1);
-            Debug.Log("====FirstTimeOpen Call", this);
-            //  Toast.Instance.ShowSpinMessage("you got" + 20 + " Diamonds");
-          
-            //  PlayerPrefs.SetInt("FirstTimeOpen", 1);
-            DataSaver.Instance.GuestData.diamonds = 0;
-          
-            UiManager.Instance.DiamondUpdate(0);
-            isfristtimeOpen = true; 
-            PlayerPrefs.SetInt("isfristtimeOpen",1);
-        }
-        else
-        {
-            Debug.Log("already opende");
-        }
-       
-    }
     public void ResetAllPurchasesAndGems()
     {
         // reset user gems in PlayerPrefs
-      
+        PlayerPrefs.DeleteKey("UserGems");
 
         // reset purchased flags
         PlayerPrefs.DeleteKey("newBoyBought");
@@ -446,7 +411,7 @@ public class GameStartManager : MonoBehaviour
         // PlayerPrefs.DeleteKey("girlBought"); if needed
 
         // reset selected char
-        PlayerPrefs.SetString("SelectedCharacter", "Elon");
+        PlayerPrefs.SetString("SelectedCharacter", "boy");
         PlayerPrefs.Save();
 
         /* if (PlayerPrefs.GetInt("GuestLogin") == 1)
@@ -501,18 +466,18 @@ public class GameStartManager : MonoBehaviour
     {
      { "boy", 0 },
     { "girl", 0 },
-    { "newBoy", 0 },
-    { "newGirl", 0 },
-    { "Gwen", 0 },
-    { "Witch", 0 },
-    { "EgyptQueen", 0 },
-    { "Elon", 0 },
-    { "Mansa", 0 },
-    { "Hotb", 0},
-    { "Hotg", 0 },
-    { "MJ", 0 },
-    { "Chubbs", 0 },
-    { "OfficeGirl", 500 }
+    { "newBoy", 100 },
+    { "newGirl", 100 },
+    { "Gwen", 1000 },
+    { "Witch", 2000 },
+    { "EgyptQueen", 5000 },
+    { "Elon", 8000 },
+    { "Mansa", 10000 },
+    { "Hotb", 7000},
+    { "Hotg", 8000 },
+    { "MJ", 5000 },
+    { "Chubbs", 3000 },
+    { "OfficeGirl", 2000 }
 
     };
     private Character character;
@@ -520,7 +485,7 @@ public class GameStartManager : MonoBehaviour
     public string GetCurrentlySelectedCharacter()
     {
         // Return whichever is stored, default to "boy" if none
-        return PlayerPrefs.GetString("SelectedCharacter", "Elon");
+        return PlayerPrefs.GetString("SelectedCharacter", "boy");
     }
 
 
@@ -593,11 +558,11 @@ public class GameStartManager : MonoBehaviour
     }
     private void AttemptToBuy(string charKey, int cost)
     {
-       /* if (PlayerPrefs.GetInt("GuestLogin") == 1)
-        {*/
+        if (PlayerPrefs.GetInt("GuestLogin") == 1)
+        {
             diamonds = PlayerPrefs.GetInt("UserGems");
 
-        //}
+        }
         /*else
         {
             diamonds = DataSaver.Instance.UserData.diamonds;
@@ -607,8 +572,8 @@ public class GameStartManager : MonoBehaviour
             // subtract the cost
 
             // Save new gem total to PlayerPrefs
-            /*if (PlayerPrefs.GetInt("GuestLogin") == 1)
-            {*/
+            if (PlayerPrefs.GetInt("GuestLogin") == 1)
+            {
                 diamonds = PlayerPrefs.GetInt("UserGems");
                 diamonds -= cost;
                 PlayerPrefs.SetInt("UserGems", diamonds);
@@ -616,7 +581,7 @@ public class GameStartManager : MonoBehaviour
 
                 PlayerPrefs.Save();
                 UiManager.Instance.DiamondUpdate(diamonds);
-            //}
+            }
             /* else
              {
                  diamonds = DataSaver.Instance.UserData.diamonds;
@@ -803,7 +768,7 @@ public class GameStartManager : MonoBehaviour
         //tutorialChubbsCharacter.SetActive(false);
         //tutorialOfficeGirlCharacter.SetActive(false);
 
-       /* if (selectedCharacterTransform == boyCharacterGame.transform)
+        if (selectedCharacterTransform == boyCharacterGame.transform)
         {
             tutorialBoyCharacter.SetActive(true);
             tutorialGirlCharacter.SetActive(false);
@@ -820,8 +785,8 @@ public class GameStartManager : MonoBehaviour
             tutorialChubbsCharacter.SetActive(false);
             tutorialOfficeGirlCharacter.SetActive(false);
             tutorialCameraFollow.target = tutorialBoyCharacter.transform;
-        }*/
-        /*else if (selectedCharacterTransform == girlCharacterGame.transform)
+        }
+        else if (selectedCharacterTransform == girlCharacterGame.transform)
         {
             tutorialBoyCharacter.SetActive(false);
             tutorialGirlCharacter.SetActive(true);
@@ -928,26 +893,26 @@ public class GameStartManager : MonoBehaviour
             tutorialChubbsCharacter.SetActive(false);
             tutorialOfficeGirlCharacter.SetActive(false);
             tutorialCameraFollow.target = tutorialWitchCharacter.transform;
-        }*/
-        if (selectedCharacterTransform == ElonCharacterGame.transform)
+        }
+        else if (selectedCharacterTransform == ElonCharacterGame.transform)
         {
-          /*  tutorialBoyCharacter.SetActive(false);
+            tutorialBoyCharacter.SetActive(false);
             tutorialGirlCharacter.SetActive(false);
             tutorialNewGirlCharacter.SetActive(false);
             tutorialNewBoyCharacter.SetActive(false);
             tutorialGwenCharacter.SetActive(false);
             tutorialEgyptQueenCharacter.SetActive(false);
-            tutorialWitchCharacter.SetActive(false);*/
+            tutorialWitchCharacter.SetActive(false);
             tutorialElonCharacter.SetActive(true);
-            /*tutorialMansaCharacter.SetActive(false);
+            tutorialMansaCharacter.SetActive(false);
             tutorialHotbCharacter.SetActive(false);
             tutorialHotgCharacter.SetActive(false);
             tutorialMJCharacter.SetActive(false);
-            tutorialChubbsCharacter.SetActive(false);*/
+            tutorialChubbsCharacter.SetActive(false);
             tutorialOfficeGirlCharacter.SetActive(false);
             tutorialCameraFollow.target = tutorialElonCharacter.transform;
         }
-        /*else if (selectedCharacterTransform == MansaCharacterGame.transform)
+        else if (selectedCharacterTransform == MansaCharacterGame.transform)
         {
             tutorialBoyCharacter.SetActive(false);
             tutorialGirlCharacter.SetActive(false);
@@ -1036,22 +1001,22 @@ public class GameStartManager : MonoBehaviour
             tutorialChubbsCharacter.SetActive(true);
             tutorialOfficeGirlCharacter.SetActive(false);
             tutorialCameraFollow.target = tutorialChubbsCharacter.transform;
-        }*/
+        }
         else if (selectedCharacterTransform == OfficeGirlCharacterGame.transform)
         {
-            /*tutorialBoyCharacter.SetActive(false);
+            tutorialBoyCharacter.SetActive(false);
             tutorialGirlCharacter.SetActive(false);
             tutorialNewGirlCharacter.SetActive(false);
             tutorialNewBoyCharacter.SetActive(false);
             tutorialGwenCharacter.SetActive(false);
             tutorialEgyptQueenCharacter.SetActive(false);
-            tutorialWitchCharacter.SetActive(false);*/
+            tutorialWitchCharacter.SetActive(false);
             tutorialElonCharacter.SetActive(false);
-            /*tutorialMansaCharacter.SetActive(false);
+            tutorialMansaCharacter.SetActive(false);
             tutorialHotbCharacter.SetActive(false);
             tutorialHotgCharacter.SetActive(false);
             tutorialMJCharacter.SetActive(false);
-            tutorialChubbsCharacter.SetActive(false);*/
+            tutorialChubbsCharacter.SetActive(false);
             tutorialOfficeGirlCharacter.SetActive(true);
             tutorialCameraFollow.target = tutorialOfficeGirlCharacter.transform;
         }
@@ -1099,7 +1064,7 @@ public class GameStartManager : MonoBehaviour
     }
 
     private void DeactivateUnselectedCharacters()
-    {/*
+    {
         if (selectedCharacterTransform == boyCharacterGame.transform)
         {
             girlCharacterGame?.SetActive(false);
@@ -1211,10 +1176,10 @@ public class GameStartManager : MonoBehaviour
             MJCharacterGame?.SetActive(false);
             ChubbsCharacterGame?.SetActive(false);
             OfficeGirlCharacterGame?.SetActive(false);
-        }*/
-         if (selectedCharacterTransform == ElonCharacterGame.transform)
+        }
+        else if (selectedCharacterTransform == ElonCharacterGame.transform)
         {
-           /* boyCharacterGame?.SetActive(false);
+            boyCharacterGame?.SetActive(false);
             girlCharacterGame?.SetActive(false);
             newGirlCharacterGame?.SetActive(false);
             newBoyCharacterGame?.SetActive(false);
@@ -1225,10 +1190,10 @@ public class GameStartManager : MonoBehaviour
             HotbCharacterGame?.SetActive(false);
             HotgCharacterGame?.SetActive(false);
             MJCharacterGame?.SetActive(false);
-            ChubbsCharacterGame?.SetActive(false);*/
+            ChubbsCharacterGame?.SetActive(false);
             OfficeGirlCharacterGame?.SetActive(false);
         }
-        /*else if (selectedCharacterTransform == MansaCharacterGame.transform)
+        else if (selectedCharacterTransform == MansaCharacterGame.transform)
         {
             boyCharacterGame?.SetActive(false);
             girlCharacterGame?.SetActive(false);
@@ -1291,22 +1256,22 @@ public class GameStartManager : MonoBehaviour
             HotgCharacterGame?.SetActive(false);
             ChubbsCharacterGame?.SetActive(false);
             OfficeGirlCharacterGame?.SetActive(false);
-        }*/
+        }
         else if (selectedCharacterTransform == OfficeGirlCharacterGame.transform)
         {
-           /* boyCharacterGame?.SetActive(false);
+            boyCharacterGame?.SetActive(false);
             girlCharacterGame?.SetActive(false);
             newGirlCharacterGame?.SetActive(false);
             newBoyCharacterGame?.SetActive(false);
             EgyptQueenCharacterGame?.SetActive(false);
             GwenCharacterGame?.SetActive(false);
-            WitchCharacterGame?.SetActive(false);*/
+            WitchCharacterGame?.SetActive(false);
             ElonCharacterGame?.SetActive(false);
-           /* MansaCharacterGame?.SetActive(false);
+            MansaCharacterGame?.SetActive(false);
             HotbCharacterGame?.SetActive(false);
             HotgCharacterGame?.SetActive(false);
             MJCharacterGame?.SetActive(false);
-            ChubbsCharacterGame?.SetActive(false);*/
+            ChubbsCharacterGame?.SetActive(false);
         }
     }
 
@@ -1315,7 +1280,7 @@ public class GameStartManager : MonoBehaviour
     {
         switch (charKey)
         {
-            /*case "boy":
+            case "boy":
                 SelectCharacter(boyCharacterMenu, boyCharacterGame.transform, "boy", boyPositionTarget.transform.position);
                 break;
 
@@ -1342,12 +1307,12 @@ public class GameStartManager : MonoBehaviour
             case "Witch":
                 SelectCharacter(WitchCharacterMenu, WitchCharacterGame.transform, "Witch", WitchPositionTarget.transform.position);
                 break;
-*/
+
             case "Elon":
                 SelectCharacter(ElonCharacterMenu, ElonCharacterGame.transform, "Elon", ElonPositionTarget.transform.position);
                 break;
 
-            /*case "Mansa":
+            case "Mansa":
                 SelectCharacter(MansaCharacterMenu, MansaCharacterGame.transform, "Mansa", MansaPositionTarget.transform.position);
                 break;
 
@@ -1365,7 +1330,7 @@ public class GameStartManager : MonoBehaviour
 
             case "Chubbs":
                 SelectCharacter(ChubbsCharacterMenu, ChubbsCharacterGame.transform, "Chubbs", ChubbsPositionTarget.transform.position);
-                break;*/
+                break;
 
             case "OfficeGirl":
                 SelectCharacter(OfficeGirlCharacterMenu, OfficeGirlCharacterGame.transform, "OfficeGirl", OfficeGirlPositionTarget.transform.position);
@@ -1401,19 +1366,19 @@ public class GameStartManager : MonoBehaviour
         }
 
         // Enable/disable the correct character menu objects, e.g.:
-       /* boyCharacterMenu.SetActive(characterMenu == boyCharacterMenu);
+        boyCharacterMenu.SetActive(characterMenu == boyCharacterMenu);
         girlCharacterMenu.SetActive(characterMenu == girlCharacterMenu);
         newBoyCharacterMenu.SetActive(characterMenu == newBoyCharacterMenu);
         newGirlCharacterMenu.SetActive(characterMenu == newGirlCharacterMenu);
         GwenCharacterMenu.SetActive(characterMenu == GwenCharacterMenu);
         EgyptQueenCharacterMenu.SetActive(characterMenu == EgyptQueenCharacterMenu);
-        WitchCharacterMenu.SetActive(characterMenu == WitchCharacterMenu);*/
+        WitchCharacterMenu.SetActive(characterMenu == WitchCharacterMenu);
         ElonCharacterMenu.SetActive(characterMenu == ElonCharacterMenu);
-       /* MansaCharacterMenu.SetActive(characterMenu == MansaCharacterMenu);
+        MansaCharacterMenu.SetActive(characterMenu == MansaCharacterMenu);
         HotbCharacterMenu.SetActive(characterMenu == HotbCharacterMenu);
         HotgCharacterMenu.SetActive(characterMenu == HotgCharacterMenu);
         MJCharacterMenu.SetActive(characterMenu == MJCharacterMenu);
-        ChubbsCharacterMenu.SetActive(characterMenu == ChubbsCharacterMenu);*/
+        ChubbsCharacterMenu.SetActive(characterMenu == ChubbsCharacterMenu);
         OfficeGirlCharacterMenu.SetActive(characterMenu == OfficeGirlCharacterMenu);
 
 
@@ -1434,7 +1399,7 @@ public class GameStartManager : MonoBehaviour
     }
     public void RefreshAllCharacterButtons()
     {
-/*        // 1) newBoy
+        // 1) newBoy
         RefreshButtonState(newBoyButton, "newBoy", newBoyCost);
 
         // 2) newGirl
@@ -1444,17 +1409,17 @@ public class GameStartManager : MonoBehaviour
         RefreshButtonState(boyButton, "boy", 0);   // 0 cost => free or auto-bought
 
         // 4) classic girl
-        RefreshButtonState(girlButton, "girl", 0); // same as above*/
-/*
+        RefreshButtonState(girlButton, "girl", 0); // same as above
+
         RefreshButtonState(GwenButton, "Gwen", GwenCost);
         RefreshButtonState(WitchButton, "Witch", WitchCost);
-        RefreshButtonState(EgyptQueenButton, "EgyptQueen", EgyptQueenCost);*/
+        RefreshButtonState(EgyptQueenButton, "EgyptQueen", EgyptQueenCost);
         RefreshButtonState(ElonButton, "Elon", ElonCost);
-  /*      RefreshButtonState(MansaButton, "Mansa", MansaCost);
+        RefreshButtonState(MansaButton, "Mansa", MansaCost);
         RefreshButtonState(HotbButton, "Hotb", HotbCost);
         RefreshButtonState(HotgButton, "Hotg", HotgCost);
         RefreshButtonState(MJButton, "MJ", MJCost);
-        RefreshButtonState(ChubbsButton, "Chubbs", ChubbsCost);*/
+        RefreshButtonState(ChubbsButton, "Chubbs", ChubbsCost);
         RefreshButtonState(OfficeGirlButton, "OfficeGirl", OfficeGirlCost);
     }
 
@@ -1497,12 +1462,12 @@ public class GameStartManager : MonoBehaviour
     private void LoadSelectedCharacter()
     {
         string selectedCharacterType = PlayerPrefs.GetString("SelectedCharacter", "boy");
-/*
+
         if (selectedCharacterType == "boy")
 
-            SelectCharacter(ElonCharacterMenu, ElonCharacterMenu.transform, "Elon", ElonPositionTarget.transform.position);
-*/
-    /*    else if (selectedCharacterType == "girl")
+            SelectCharacter(boyCharacterMenu, boyCharacterGame.transform, "boy", boyPositionTarget.transform.position);
+
+        else if (selectedCharacterType == "girl")
             SelectCharacter(girlCharacterMenu, girlCharacterGame.transform, "girl", girlPositionTarget.transform.position);
         else if (selectedCharacterType == "newGirl")
             SelectCharacter(newGirlCharacterMenu, newGirlCharacterGame.transform, "newGirl", newGirlPositionTarget.transform.position);
@@ -1513,10 +1478,10 @@ public class GameStartManager : MonoBehaviour
         else if (selectedCharacterType == "EgyptQueen")
             SelectCharacter(EgyptQueenCharacterMenu, EgyptQueenCharacterGame.transform, "EgyptQueen", EgyptQueenPositionTarget.transform.position);
         else if (selectedCharacterType == "Witch")
-            SelectCharacter(WitchCharacterMenu, WitchCharacterGame.transform, "Witch", WitchPositionTarget.transform.position);*/
-        if (selectedCharacterType == "Elon")
+            SelectCharacter(WitchCharacterMenu, WitchCharacterGame.transform, "Witch", WitchPositionTarget.transform.position);
+        else if (selectedCharacterType == "Elon")
             SelectCharacter(ElonCharacterMenu, ElonCharacterGame.transform, "Elon", ElonPositionTarget.transform.position);
-       /* else if (selectedCharacterType == "Mansa")
+        else if (selectedCharacterType == "Mansa")
             SelectCharacter(MansaCharacterMenu, MansaCharacterGame.transform, "Mansa", MansaPositionTarget.transform.position);
         else if (selectedCharacterType == "Hotb")
             SelectCharacter(HotbCharacterMenu, HotbCharacterGame.transform, "Hotb", HotbPositionTarget.transform.position);
@@ -1525,7 +1490,7 @@ public class GameStartManager : MonoBehaviour
         else if (selectedCharacterType == "MJ")
             SelectCharacter(MJCharacterMenu, MJCharacterGame.transform, "MJ", MJPositionTarget.transform.position);
         else if (selectedCharacterType == "Chubbs")
-            SelectCharacter(ChubbsCharacterMenu, ChubbsCharacterGame.transform, "Chubbs", ChubbsPositionTarget.transform.position);*/
+            SelectCharacter(ChubbsCharacterMenu, ChubbsCharacterGame.transform, "Chubbs", ChubbsPositionTarget.transform.position);
         else if (selectedCharacterType == "OfficeGirl")
             SelectCharacter(OfficeGirlCharacterMenu, OfficeGirlCharacterGame.transform, "OfficeGirl", OfficeGirlPositionTarget.transform.position);
     }
@@ -1542,8 +1507,6 @@ public class GameStartManager : MonoBehaviour
         Assets.MutualFundsPortfolio = 0;
         Assets.LandPortfolio = 0;
         character.isWarningShown = false;
-        GameManager.isGameOver = false;
-
     }
 
     public void ChangeSortOrderToFive()

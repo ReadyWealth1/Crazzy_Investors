@@ -8,7 +8,6 @@ using System.Collections;
 public enum RewardType
 {
     Diamonds,
-    Character,
     BadLuck
 }
 
@@ -32,10 +31,7 @@ public class SpinAndWin : MonoBehaviour
     private Coroutine timerCoroutine;
 
     private const string LastSpinTimeKey = "LastSpinTime";
-    private const string CharacterWonKey = "CharacterWon_";
-    private const string SpinCountKey = "SpinCount";
-    private const int MinSpinsBeforeCharacter = 6;
-    private const double LockDurationHours = 12.0f;
+    private const double LockDurationHours = .0f;
 
     [Header("Buttons")]
     [SerializeField] private Button closeBtn;
@@ -177,89 +173,39 @@ public class SpinAndWin : MonoBehaviour
 
         Reward selectedReward = rewards[segmentIndex];
 
-        if (selectedReward.rewardType == RewardType.Character)
+        // Treat any invalid or removed character rewards as Diamonds
+        if (selectedReward.rewardType == RewardType.Diamonds)
         {
-            int spinCount = PlayerPrefs.GetInt(SpinCountKey, 0);
-
-            if (spinCount < MinSpinsBeforeCharacter)
+            StartCoroutine(WaitForPopup(() =>
             {
-                selectedReward.rewardType = RewardType.Diamonds;
-                selectedReward.amount = 30;
-                PlayerPrefs.SetInt(SpinCountKey, spinCount + 1);
-                PlayerPrefs.Save();
-
-                StartCoroutine(WaitForPopup(() => {
-                    NewAudioManager.Instance().PlayPopupSound();
-                    Toast.Instance.ShowSpinMessage($"You got " + selectedReward.amount + " Diamonds");
-                    AddDiamonds(selectedReward.amount);
-                    AfterRewardShown();
-                }));
-            }
-            else
-            {
-                PlayerPrefs.SetInt(SpinCountKey, 0);
-                PlayerPrefs.Save();
-
-                if (PlayerPrefs.GetInt(CharacterWonKey + segmentIndex, 0) == 0)
-                {
-                    PlayerPrefs.SetInt(CharacterWonKey + segmentIndex, 1);
-                    PlayerPrefs.Save();
-
-                    if (segmentIndex == 3)
-                    {
-                        StartCoroutine(WaitForPopup(() => {
-                            Toast.Instance.ShowGirlPopup();
-                            NewAudioManager.Instance().PlayPopupSound();
-                            PlayerPrefs.SetInt($"HotgBought", 1);
-                            PlayerPrefs.Save();
-                            AfterRewardShown();
-                        }));
-                    }
-                    else if (segmentIndex == 8)
-                    {
-                        StartCoroutine(WaitForPopup(() => {
-                            Toast.Instance.ShowBoyPopup();
-                            NewAudioManager.Instance().PlayPopupSound();
-                            PlayerPrefs.SetInt($"HotbBought", 1);
-                            PlayerPrefs.Save();
-                            AfterRewardShown();
-                        }));
-                    }
-                }
-                else
-                {
-                    Debug.Log("======else bolck");
-                    selectedReward.rewardType = RewardType.Diamonds;
-                    selectedReward.amount = 30;
-                    Debug.Log("======else bolck" + selectedReward.amount+" reward ");
-
-                    StartCoroutine(WaitForPopup(() => {
-                        NewAudioManager.Instance().PlayPopupSound();
-                        Toast.Instance.ShowSpinMessage($"You already unlocked this character, so you received {selectedReward.amount} Diamonds instead.");
-                        AddDiamonds(selectedReward.amount);
-                        AfterRewardShown();
-                    }));
-                }
-            }
+                NewAudioManager.Instance().PlayPopupSound();
+                Toast.Instance.ShowSpinMessage($"You got {selectedReward.amount} Diamonds");
+                AddDiamonds(selectedReward.amount);
+                AfterRewardShown();
+            }));
         }
         else if (selectedReward.rewardType == RewardType.BadLuck)
         {
             if (segmentIndex == 2 || segmentIndex == 6)
             {
-                StartCoroutine(WaitForPopup(() => {
+                StartCoroutine(WaitForPopup(() =>
+                {
                     NewAudioManager.Instance().BadLuckPopupSound();
                     Toast.Instance.showBetterLuckPopup();
                     AfterRewardShown();
                 }));
             }
         }
-
-        else if (selectedReward.rewardType == RewardType.Diamonds || segmentIndex == 8 || segmentIndex == 3)
+        else
         {
+            // Default fallback to diamond if anything unexpected
+            selectedReward.rewardType = RewardType.Diamonds;
+            selectedReward.amount = 30;
 
-            StartCoroutine(WaitForPopup(() => {
+            StartCoroutine(WaitForPopup(() =>
+            {
                 NewAudioManager.Instance().PlayPopupSound();
-                Toast.Instance.ShowSpinMessage($"You got " + selectedReward.amount + " Diamonds");
+                Toast.Instance.ShowSpinMessage($"You got {selectedReward.amount} Diamonds");
                 AddDiamonds(selectedReward.amount);
                 AfterRewardShown();
             }));

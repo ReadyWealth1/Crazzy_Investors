@@ -36,10 +36,11 @@ public class AudioManager : MonoBehaviour
         if (musicSource.clip == null)
         {
             musicSource.clip = background;
-            musicSource.loop = true;
+            musicSource.loop = true; // Set the background music to loop
             musicSource.Play();
         }
 
+        // Load saved volume levels and apply them
         float savedMusicVolume = PlayerPrefs.GetFloat("MusicVolume", 1.0f);
         float savedSFXVolume = PlayerPrefs.GetFloat("SFXVolume", 1.0f);
         SetMusicVolume(savedMusicVolume);
@@ -91,5 +92,15 @@ public class AudioManager : MonoBehaviour
     public void PlaySFX(AudioClip clip)
     {
         SFXSource.PlayOneShot(clip);
+    }
+
+    public void IncreasePitch()
+    {
+        // Pitch adjustment logic here
+    }
+
+    public void ResetPitch()
+    {
+        // Reset pitch logic here
     }
 }

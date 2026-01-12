@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using com.jiogames.wrapper;
 
 namespace Jio.SampleGame
 {
@@ -29,7 +30,7 @@ namespace Jio.SampleGame
         public void LifeDecrease(){
             transform.GetChild(lifeCount).gameObject.SetActive(false);
              lifeCount -= 1;
-               /* if (lifeCount < 0)
+                if (lifeCount < 0)
                 {
                     if (!firstTimeRV)
                     {
@@ -40,12 +41,12 @@ namespace Jio.SampleGame
                         firstTimeRV = false;
 
                         //If RV ad is available then open the RV popup otherwise open the game over screen
-                       *//* if(JioWrapperJS.Instance.IsRVReady)
-                            UIManager.Instance.lifeoverPopup.SetActive(true);*//*
+                        if(JioWrapperJS.Instance.IsRVReady)
+                            UIManager.Instance.lifeoverPopup.SetActive(true);
                         else
                             GameOver();
                     }
-                }*/
+                }
         }
 
         public void LifeIncrease(){
@@ -56,8 +57,8 @@ namespace Jio.SampleGame
         public void GameOver()
         {
             //Show MidRoll AD.
-           /* JioWrapperJS.Instance.postScore(PlayerPrefs.GetInt("HighScore"));
-            JioWrapperJS.Instance.showInterstitial();*/
+            JioWrapperJS.Instance.postScore(PlayerPrefs.GetInt("HighScore"));
+            JioWrapperJS.Instance.showInterstitial();
 
             UIManager.Instance.lifeoverPopup.SetActive(false);
             UIManager.Instance.gameoverScreen.SetActive(true);

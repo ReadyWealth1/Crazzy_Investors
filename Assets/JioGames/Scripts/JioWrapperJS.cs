@@ -1,20 +1,16 @@
-/*using System.Collections;
-//using System.Collections.Generic;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
 using UnityEngine.Events;
 using System;
-using TMPro;
-using UnityEngine.UI;
-
-using UnityEngine.UIElements;
 
 namespace com.jiogames.wrapper
 {
     public class JioWrapperJS : MonoBehaviour
     {
         internal static JioWrapperJS Instance { get; private set; }
-      
+
         [DllImport("__Internal")]
         private static extern void PostScore(int score);
         [DllImport("__Internal")]
@@ -40,7 +36,7 @@ namespace com.jiogames.wrapper
         private static extern void ShowNativeBanner(string adKeyId, string package);
         [DllImport("__Internal")]
         private static extern void HideBanner();
-        
+
 
         [SerializeField] internal string interstitial_ZoneKey = "5fcpxsh8";
         [SerializeField] internal string rewardedVideo_ZoneKey = "yrf261np";
@@ -52,7 +48,7 @@ namespace com.jiogames.wrapper
         internal bool IsAdReady {get; private set;}
         internal bool IsRVReady  {get; private set;}
         internal bool IsRewardUser  {get; private set;}
-        
+
         UserProfileInfo profileInfo;
         internal Detail ProfileInfo { get { return profileInfo.detail; } }
 
@@ -68,7 +64,7 @@ namespace com.jiogames.wrapper
                 Instance = this; 
                 DontDestroyOnLoad(gameObject);
             }
-          // cacheAd();
+           cacheAd();
             Debug.Log("JioGamesJS: SDK initialize : 1.0.0");
         }
 
@@ -177,8 +173,6 @@ namespace com.jiogames.wrapper
             }
             else if(string.Equals(adSpotKey, rewardedVideo_ZoneKey)){
                 IsRVReady = true;
-
-               // adsButton.gameobject.SetActive(false);
                 Debug.Log("JioGamesJS: onAdPrepared RewardedVideo " + IsRVReady);
             }
             else { }
@@ -200,7 +194,7 @@ namespace com.jiogames.wrapper
                 Debug.Log("JioGamesJS: onAdClosed RewardedVideo " + IsRVReady);
 
             //Addisional code for give reward amount 
-                if ( PlayerPrefs.GetInt("HomeRewardBtnClick") == 1)
+                if (PlayerPrefs.GetInt("GuestLogin") == 1 && PlayerPrefs.GetInt("HomeRewardBtnClick") == 1)
                 {
 
                     int diamondCount = PlayerPrefs.GetInt("UserGems");
@@ -293,4 +287,4 @@ namespace com.jiogames.wrapper
     {
         public Detail detail;
     }
-}*/
+}

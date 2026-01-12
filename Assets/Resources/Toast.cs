@@ -13,17 +13,17 @@ public class Toast : MonoBehaviour
 
     [Header("Spin And Win")]
     [SerializeField] private GameObject messageSpinPanel;
-   /* [SerializeField] private GameObject showGirlPopup;
-    [SerializeField] private GameObject showBoyPopup;*/
+    [SerializeField] private GameObject showGirlPopup;
+    [SerializeField] private GameObject showBoyPopup;
     [SerializeField] private GameObject betterLuckNextTime;
     [SerializeField] private GameObject Quit_PopUp;
     [SerializeField] private GameObject adsPopup;
-    //[SerializeField] private GameObject InternetPopup;
+    [SerializeField] private GameObject InternetPopup;
 
     [SerializeField] private TextMeshProUGUI spinTxtMessage;
     [SerializeField] private Button btnClose;
-   /* [SerializeField] private Button girlCloseBtn;
-    [SerializeField] private Button boyCloseBtn;*/
+    [SerializeField] private Button girlCloseBtn;
+    [SerializeField] private Button boyCloseBtn;
     [SerializeField] private Button betterLuckClose;
     [SerializeField] private Button adsBtn;
   
@@ -46,8 +46,8 @@ public class Toast : MonoBehaviour
 
         // IronSourceAdsManager.instance.ShowBanner();
         btnClose.onClick.AddListener(CloseSpin);
-       // girlCloseBtn.onClick.AddListener(CloseGirlPopup);
-       // boyCloseBtn.onClick.AddListener(CloseBoyPopup);
+        girlCloseBtn.onClick.AddListener(CloseGirlPopup);
+        boyCloseBtn.onClick.AddListener(CloseBoyPopup);
         betterLuckClose.onClick.AddListener(ClosebetterLuck);
         adsBtn.onClick.AddListener(ShowAds);
     }
@@ -56,12 +56,12 @@ public class Toast : MonoBehaviour
 
     public void OpenInternetPopup()
     {
-       // InternetPopup.SetActive(true);
+        InternetPopup.SetActive(true);
     }
     public void CloseInternetPopup()
     {
 
-       // InternetPopup.SetActive(false );
+        InternetPopup.SetActive(false );
     }
     public void ShowSpinMessage(string message)
     {
@@ -73,18 +73,15 @@ public class Toast : MonoBehaviour
     }
     public void ShowGirlPopup()
     {
-        //showGirlPopup.SetActive(true);
+        showGirlPopup.SetActive(true);
     }
     public void ShowAds()
     {
-        CloseAdsPopup();
-        PlayerPrefs.SetInt("HomeRewardBtnClick", 1);
-       // JioWrapperJS.Instance.showRewarded();
-        // IronSourceAdsManager.instance.ShowRewarded();
+       // IronSourceAdsManager.instance.ShowRewarded();
     }
   public void ShowBoyPopup()
     {
-       // showBoyPopup.SetActive(true);
+        showBoyPopup.SetActive(true);
     }
     public void showBetterLuckPopup()
     {
@@ -105,16 +102,16 @@ public class Toast : MonoBehaviour
         // AudioManager.Instance().PanleClose();
         messageSpinPanel.SetActive(false);
       
-      //  showBoyPopup.SetActive(false);
+        showBoyPopup.SetActive(false);
         betterLuckNextTime.SetActive(false);
     }
     public void CloseGirlPopup()
     {
-      // showGirlPopup.SetActive(false);
+        showGirlPopup.SetActive(false);
     }
     public void CloseBoyPopup()
     {
-        //showBoyPopup.SetActive(false);
+        showBoyPopup.SetActive(false);
     }
     public void ClosebetterLuck()
     {

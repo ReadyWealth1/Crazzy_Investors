@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class WelComeScreen : MonoBehaviour//, LoginCallBack
 {
-  // public Button googleLogin;
+    public Button googleLogin;
     public Button guestLogin;
 
     public void Start()
     {
-        //guestLogin.onClick.AddListener(GuestLogin);
+        guestLogin.onClick.AddListener(GuestLogin);
        // googleLogin.onClick.AddListener(GoogleLogin);
     }
     public void GoogleLogin()
@@ -24,14 +24,14 @@ public class WelComeScreen : MonoBehaviour//, LoginCallBack
     {
         PlayerPrefs.SetInt("GuestLogin", 1);
         PlayerPrefs.SetInt("FirstTimeOpen", 1);
-        Debug.Log("====FirstTimeOpen Call",this);
+        Debug.Log("====FirstTimeOpen Call");
         //  Toast.Instance.ShowSpinMessage("you got" + 20 + " Diamonds");
         PlayerPrefs.SetInt("UserGems", 0);
       //  PlayerPrefs.SetInt("FirstTimeOpen", 1);
         DataSaver.Instance.GuestData.diamonds = 0;
         UiManager.Instance.UpdateNameText("Guest");
         UiManager.Instance.DiamondUpdate(0); 
-       // UiManager.Instance.CloseWelComeScreen();
+        UiManager.Instance.CloseWelComeScreen();
     }
 
     /*public void OnGoogleLoginComplete(string name, string userId)

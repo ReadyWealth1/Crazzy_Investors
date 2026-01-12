@@ -29,7 +29,7 @@ public class PauseMenu : MonoBehaviour
         instance = this;
         PauseBtn = GameObject.FindWithTag("PauseBtn");
 
-        highScoreManager = Object.FindFirstObjectByType<HighScoreManager>();
+        highScoreManager = FindObjectOfType<HighScoreManager>();
     }
     /*  private void DisablePause()
       {
@@ -43,7 +43,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (StartManager == null)
         {
-            StartManager = Object.FindFirstObjectByType<GameStartManager>();
+            StartManager = FindObjectOfType<GameStartManager>();
         }
     }
 
@@ -132,23 +132,16 @@ public class PauseMenu : MonoBehaviour
 
     public void ExitToHomeScreen()
     {
-        Time.timeScale = 1f;
-
-        // Reset static game state
-        Character.isDead = false;
-        Character.StopAllState = false;
-        Character.is1Dead = false;
-        // Reset other statics you use for gameplay lock
-        // Example:
-        // GameManager.GameOver = false;
-
+        Time.timeScale = 1f; // Reset time scale
         if (highScoreManager != null)
         {
+            Debug.Log("dasdasdas");
             highScoreManager.CheckForHighScore();
         }
-        Character.isGameStart = false;  
-        //JioWrapperJS.Instance.showInterstitial();
+        //StartManager.LeaveToHomeScreen();
+        // DataSaver.Instance.SaveDataFn();
         SceneManager.LoadScene("new onwrinner samplescene");
+
     }
 
     private IEnumerator SlowDownAndPauseCoroutine(float targetTimeScale = 0.1f, float duration = 0.3f)
@@ -198,15 +191,6 @@ public class PauseMenu : MonoBehaviour
     }
 
     public void StartGradualResume()
-    {
-        if (pauseCounter == 0)
-        {
-            StopActiveCoroutine(); // Stop any currently running coroutine
-            activeCoroutine = StartCoroutine(ResumeCoroutine());
-
-        }
-    }
-    public void Lottery_StartGradualResume()
     {
         if (pauseCounter == 0)
         {

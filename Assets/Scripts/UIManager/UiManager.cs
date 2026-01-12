@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
 {
@@ -13,9 +12,7 @@ public class UiManager : MonoBehaviour
     [Header("Diamond Text")]
     [SerializeField] private TextMeshProUGUI diamondHomeText;
     [SerializeField] private TextMeshProUGUI diamondShopText;
-    private TextMeshProUGUI userNameTxt;
-    [SerializeField] private Button adsButton;
-    [SerializeField] private Button adsButtonToast;
+    [SerializeField] private TextMeshProUGUI userNameTxt;
 
     [SerializeField] private GameObject welcomeScreen;
     private int diamondCount;
@@ -35,7 +32,7 @@ public class UiManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
        //  && PlayerPrefs.GetInt("GoogleLoggedIn") == 0)
-       /* if ((PlayerPrefs.GetInt("GuestLogin") == 0))
+        if ((PlayerPrefs.GetInt("GuestLogin") == 0))
         {
            
             OpenWelComeScreen();
@@ -44,23 +41,9 @@ public class UiManager : MonoBehaviour
         {
             CloseWelComeScreen();
            
-        }*/
+        }
 
     }
-   /* public void Update()
-    {
-        if(JioWrapperJS.Instance.IsRVReady == true)
-        {
-            adsButton.interactable = true;
-            adsButtonToast.interactable = true;
-           
-        }
-        else
-        {
-            adsButton.interactable = false;
-            adsButtonToast.interactable = false;
-        }
-    }*/
 
     public void UpdateNameText(string name)
     {
@@ -79,31 +62,24 @@ public class UiManager : MonoBehaviour
         // count += PlayerPrefs.GetInt("UserGems");
       
         diamondCount = count;
-
         diamondHomeText.text = diamondCount.ToString();
         diamondShopText.text = diamondCount.ToString();
-        PlayerPrefs.SetInt("UserGems", diamondCount);
+        if (PlayerPrefs.GetInt("GuestLogin") == 1)
+        {
+            PlayerPrefs.SetInt("UserGems", diamondCount);
+          //  DataSaver.Instance.GuestData.diamonds = diamondCount;
+          /*  userNameTxt.text = "Guest";*/
 
-        //  DataSaver.Instance.GuestData.diamonds = diamondCount;
-        //*  userNameTxt.text = "Guest";*//*
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            Debug.Log("CRUCIAL!!!: " + DataSaver.Instance.userId);
+            DataSaver.Instance.UserData.diamonds = diamondCount;
 
-        PlayerPrefs.Save();
-        /* if (PlayerPrefs.GetInt("GuestLogin") == 1)
-         {
-             PlayerPrefs.SetInt("UserGems", diamondCount);
-           //  DataSaver.Instance.GuestData.diamonds = diamondCount;
-           *//*  userNameTxt.text = "Guest";*//*
-
-             PlayerPrefs.Save();
-         }
-         else
-         {
-             Debug.Log("CRUCIAL!!!: " + DataSaver.Instance.userId);
-             DataSaver.Instance.UserData.diamonds = diamondCount;
-
-             userNameTxt.text = DataSaver.Instance.UserData.userName;
-             //DataSaver.Instance.SaveDataFn();
-         }*/
+            userNameTxt.text = DataSaver.Instance.UserData.userName;
+            //DataSaver.Instance.SaveDataFn();
+        }
 
     }
 
