@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class tut_script : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class tut_script : MonoBehaviour
     public GameObject UiScreen8;
     public GameObject UiScreen9;
     public GameObject UiScreen9_assetbtn;
+    [SerializeField]private Button assetbtn;
 
     public GameObject UiScreen10;
     public GameObject UiScreen11;
@@ -23,6 +25,7 @@ public class tut_script : MonoBehaviour
     public GameObject UiScreen15;
     public GameObject UiScreen16;
     public GameObject UiScreen17;
+    public GameObject AssetCloseButton;
     public Canvas BuyAssets;
     public Canvas Portfolio;
     public GroundSpawnerTest GroundSpawnerTest;
@@ -36,6 +39,7 @@ public class tut_script : MonoBehaviour
 
     void Start()
     {
+        assetbtn.onClick.AddListener(ChangePorttSorttoHigh);
 
         // pausemenu = GetComponent<PauseMenu>();
         // Ensure the UI screen is initially hidden
@@ -109,13 +113,30 @@ public class tut_script : MonoBehaviour
         }
 
     }
+    private void Update()
+    {
+        if (GameManager.isGameOver)
+        {
+            ChangePortSorttoLow();
+        }
+    }
+    private void OnEnable()
+    {
+        GameManager.OnGameOver += ChangePortSorttoLow;
+        GameManager.OnGameOver += DisableAssetsAndPort;
+    }
+    private void OnDisable()
+    {
+        GameManager.OnGameOver -= ChangePortSorttoLow;
+        GameManager.OnGameOver -= DisableAssetsAndPort;
+    }
 
     public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Tut1"))
         {
             UiScreen1.SetActive(true);
-            PauseMenu.instance.PauseGame();
+            //PauseMenu.instance.PauseGame();
             //   Debug.Log($"isT1 is" + isT1);
             //   isT1 = true;
 
@@ -168,13 +189,16 @@ public class tut_script : MonoBehaviour
         }
         if (other.CompareTag("Tut9"))
         {
+            ChangePorttSorttoHigh();
             UiScreen9.SetActive(true);
             UiScreen9_assetbtn.SetActive(true);
             PauseMenu.instance.PauseGame();
+            AssetCloseButton.SetActive(true);
         }
 
         if (other.CompareTag("Tut10"))
         {
+            ChangePortSorttoLow();
             UiScreen10.SetActive(true);
             PauseMenu.instance.PauseGame();
             Job_Ui.SetActive(true);
@@ -208,19 +232,22 @@ public class tut_script : MonoBehaviour
         if (other.CompareTag("Tut16"))
         {
             UiScreen16.SetActive(true);
+            ChangeLotSorttoHigh();
             PauseMenu.instance.PauseGame();
         }
         if (other.CompareTag("Tut17"))
         {
             UiScreen17.SetActive(true);
             PauseMenu.instance.PauseGame();
+            ChangeLotSorttoLow();
+            
         }
     }
     public void ChangeLotSorttoLow()
     {
         if (Lottery != null)
         {
-            Lottery.sortingOrder = 6;
+            Lottery.sortingOrder = 4;
             Debug.Log("ChangeLotSorttoLow Method call");
             /* PauseMenu.instance.StartGradualResume();
              Debug.Log("PauseMenu.instance.StartGradualResume();");*/
@@ -254,11 +281,28 @@ public class tut_script : MonoBehaviour
             Portfolio.sortingOrder = 6;
         }
     }
+    public void DisableAssetsAndPort()
+    {
+        Image portfolioImg = PortfolioBtn.GetComponent<Image>();
+        if (portfolioImg != null)
+            portfolioImg.raycastTarget = false;
+
+        Image assetImg = UiScreen9_assetbtn.GetComponent<Image>();
+        if (assetImg != null)
+            assetImg.raycastTarget = false;
+    }
     public void ChangePorttSorttoHigh()
     {
         if (Portfolio != null)
         {
             Portfolio.sortingOrder = 33;
+        }
+    }
+    public void ChangePorttSorttoLow()
+    {
+        if (Portfolio != null)
+        {
+            Portfolio.sortingOrder = 13;
         }
     }
     public void UpperChangeBuyAssetSort()
