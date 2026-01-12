@@ -5,7 +5,7 @@ public class CameraFollow : MonoBehaviour
 {
     public Transform target; // The target the camera follows
     public float heightOffset = 2f; // Desired height from the ground
-    public static float distanceBehind = 4f; // Distance behind the target
+    public static float distanceBehind = 5f; // Distance behind the target
     public static float followSpeed = 5f; // Speed at which the camera follows
     public LayerMask groundLayer; // LayerMask for the ground
     private Vector3 targetPosition;

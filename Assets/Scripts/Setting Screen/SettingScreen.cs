@@ -8,21 +8,21 @@ public class SettingScreen : MonoBehaviour, LoginCallBack
     [SerializeField] private Button btnVibration;
     [SerializeField] private GameObject vibrationOn;
     [SerializeField] private GameObject vibrationOff;
-    [SerializeField] private Button loginBtn;
+    /*[SerializeField] private Button loginBtn;
     [SerializeField] private Button logoutBtn;
-
-    [SerializeField] private GameObject displayName;
+*/
+    /*[SerializeField] private GameObject displayName;
     [SerializeField] private TextMeshProUGUI userNameText;
 
-
+*/
 
     public static SettingScreen instance;
 
 
-    public void UpdateText(string text)
+   /* public void UpdateText(string text)
     {
         userNameText.text = text;
-    }
+    }*/
 
     public static SettingScreen Instance()
     {
@@ -51,7 +51,7 @@ public class SettingScreen : MonoBehaviour, LoginCallBack
         // GoogleController.instance.OnSignInSilently();
         if (PlayerPrefs.GetInt("GoogleLoggedIn") == 1)
         {
-            userNameText.text = PlayerPrefs.GetString("GoogleUserName");
+            //userNameText.text = PlayerPrefs.GetString("GoogleUserName");
             //txtLevelName.text = GameData.userdetails.userName;
             // Debug.Log("txtLevelName" + GameData.userdetails.userName);
         }
@@ -65,8 +65,8 @@ public class SettingScreen : MonoBehaviour, LoginCallBack
         //}
 
         //IronSourceAdsManager.instance.ShowBanner();
-        loginBtn.onClick.AddListener(GoogleLogin);
-        logoutBtn.onClick.AddListener(OnLogOut);
+       /* loginBtn.onClick.AddListener(GoogleLogin);
+        logoutBtn.onClick.AddListener(OnLogOut);*/
         btnVibration.onClick.AddListener(ToggleVibration);
 
         if (!PlayerPrefs.HasKey("Vibration"))
@@ -84,23 +84,23 @@ public class SettingScreen : MonoBehaviour, LoginCallBack
         if (PlayerPrefs.GetInt("GoogleLoggedIn") == 1)
         {
             Debug.Log("login mathad call ++++++");
-            displayName.SetActive(true);
+           /* displayName.SetActive(true);
             loginBtn.gameObject.SetActive(false);
-            logoutBtn.gameObject.SetActive(true);
+            logoutBtn.gameObject.SetActive(true);*/
 
             if (PlayerPrefs.HasKey("GoogleUserName"))
             {
                 Debug.Log("user name mathad call ++++++");
                 string userName = PlayerPrefs.GetString("GoogleUserName");
-                userNameText.text = userName;
+                //userNameText.text = userName;
                 Debug.Log("User Name Updated: " + userName);
             }
         }
         else
         {
-            displayName.SetActive(false);
+         /*   displayName.SetActive(false);
             loginBtn.gameObject.SetActive(true);
-            logoutBtn.gameObject.SetActive(false);
+            logoutBtn.gameObject.SetActive(false);*/
         }
     }
 
@@ -118,7 +118,7 @@ public class SettingScreen : MonoBehaviour, LoginCallBack
         else
         {
             Debug.Log("No internet. Show popup.");
-            Toast.Instance.OpenInternetPopup();
+           // Toast.Instance.OpenInternetPopup();
             //internetPanel.SetActive(true);
         }
       
@@ -193,14 +193,14 @@ public class SettingScreen : MonoBehaviour, LoginCallBack
             UiManager.Instance.DiamondUpdate(DataSaver.Instance.UserData.diamonds);*/
             /*userNameText.text = DataSaver.Instance.UserData.userName;*/
 
-            displayName.SetActive(true);
+          /*  displayName.SetActive(true);
             loginBtn.gameObject.SetActive(false);
-            logoutBtn.gameObject.SetActive(true);
+            logoutBtn.gameObject.SetActive(true);*/
 
             UpdateUserUI();
         };
 
-        UiManager.Instance.CloseWelComeScreen();
+       // UiManager.Instance.CloseWelComeScreen();
         InternetConnectivity.Instance.StartMonitoringInternet();
     }
 

@@ -4,10 +4,10 @@ public class CardSwiper : MonoBehaviour
 {
     public float swipeDistance = 200f;
     public float swipeTime = 0.5f;
-
     private Transform cardContainer;
-    private bool isSwiping = false;
+    public  bool isSwiping = false;
     public static bool IsItOpen;
+
     void Start()
     {
         cardContainer = transform; // Assuming this script is attached to the parent of the card objects
@@ -16,7 +16,7 @@ public class CardSwiper : MonoBehaviour
 
     void Update()
     {
-        if (!isSwiping && (IsItOpen = true))
+        if (!isSwiping && IsItOpen == true) // Fixed the assignment bug from your original
         {
             if (SwipeManager.swipeLeft)
             {
@@ -29,6 +29,12 @@ public class CardSwiper : MonoBehaviour
                 SwipeCard(swipeDistance, false);
             }
         }
+    }
+
+    // Public method for ToggleAnimation to check if swiping is happening
+    public bool IsSwiping()
+    {
+        return isSwiping;
     }
 
     void SwipeCard(float distance, bool isLeftSwipe)

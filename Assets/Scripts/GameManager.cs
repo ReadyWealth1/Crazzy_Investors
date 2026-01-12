@@ -1,10 +1,16 @@
 using TMPro;
 using UnityEngine;
+using System;
 using System.Collections;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    private Coroutine incomeCoroutine;
+    public static bool isGameOver = false;
+    public static event System.Action OnGameOver;
+    [SerializeField] public Slider Health;
+    [SerializeField] private TMPPopupManager popupManager;
     public GameObject gameOverPanel;
     public GameObject coinOverPanel;
     public static float numberOfCoins;
@@ -36,21 +42,21 @@ public class GameManager : MonoBehaviour
     // New fields for UI screens
     public GameObject jobCounterScreen;
     public GameObject jobMissedScreen;
-    public GameOverVideoPlayer GameOverVideoPlayer;
-
-    public GameObject boyBackpackObject;
+   /* public GameOverVideoPlayer GameOverVideoPlayer;
+*/
+   /* public GameObject boyBackpackObject;
     public GameObject girlBackpackObject;
     public GameObject newBoyBackpackObject;
     public GameObject newGirlBackpackObject;
     public GameObject GwenBackpackObject;
     public GameObject EgyptQueenBackpackObject;
-    public GameObject WitchBackpackObject;
+    public GameObject WitchBackpackObject;*/
     public GameObject ElonBackpackObject;
-    public GameObject MansaBackpackObject;
+/*    public GameObject MansaBackpackObject;
     public GameObject HotbBackpackObject;
     public GameObject HotgBackpackObject;
     public GameObject MJBackpackObject;
-    public GameObject ChubbsBackpackObject;
+    public GameObject ChubbsBackpackObject;*/
     public GameObject OfficeGirlBackpackObject;
 
 
@@ -66,10 +72,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        // Start only the repeating inflation coroutine
+        StartCoroutine(UpdateIncomeAndTimer());
 
+    }
 
     private void Start()
     {
+      /*  incomeCoroutine = StartCoroutine(UpdateIncomeAndTimer());*/
+
         numberOfCoins = 1000000;
         PassiveIncome = 0;
         // inflationRate = 200f;
@@ -85,7 +98,7 @@ public class GameManager : MonoBehaviour
 
         // Debug.Log($"Game Started: numberOfCoins = {numberOfCoins}, PassiveIncome = {PassiveIncome}, inflationRate = {inflationRate}, increaseRate = {increaseRate}, Salary = {Salary}, JobPresent = {JobPresent}");
 
-        StartCoroutine(UpdateIncomeAndTimer());
+        //StartCoroutine(UpdateIncomeAndTimer());
 
         // Initialize UI screens
         jobCounterScreen.SetActive(true);
@@ -94,58 +107,48 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void ShowGameOverScreen()
+   /* public void ShowGameOverScreen()
     {
         //GameOverVideoPlayer.OnBankruptcy();
         //gameOverPanel.SetActive(true);
         // Debug.Log("Game Over Screen Shown");
-    }
+    }*/
 
     private void Update()
     {
+        // Always show the final coin value, even after game over
+        CoinsText.text = " " + NumberFormatter.FormatNumberIndianSystem(numberOfCoins);
+
+        if (isGameOver)
+            return;
+
+        if (numberOfCoins < 0)
+        {
+            isGameOver = true;
+            OnGameOver?.Invoke();
+            if (incomeCoroutine != null)
+                StopCoroutine(incomeCoroutine);
+
+          // StartCoroutine(ShowGameOverScreenAfterDelay(2f));
+            return;
+        }
+
         if (Character.is1Dead == true)
         {
             TotalInflationCutText.text = "" + NumberFormatter.FormatNumberIndianSystem(totalInflationCut);
             Character.is1Dead = false;
         }
+
         if (FileCollector.currentFiles == 0 && !First_File_Zero)
         {
             Salary = 0;
             JobPresent = false;
             jobCounterScreen.SetActive(false);
             jobMissedScreen.SetActive(true);
-            // Debug.Log("Job lost: Salary set to 0, JobPresent = false");
         }
-
-        //CashFlow = TotalPassiveIncome - inflationRate;
-        /*  if (inflationRate + TotalPassiveIncome != 0 && TotalPassiveIncome != 0)
-          {
-         //     Casflow_Percentage = ((TotalPassiveIncome) / (inflationRate + TotalPassiveIncome)) * 100;
-          }
-          else
-          {
-              Casflow_Percentage = CashFlow;
-          }*/
-
-        CoinsText.text = " " + NumberFormatter.FormatNumberIndianSystem(numberOfCoins);
-        //InflationRateText.text = " " + Mathf.Round(inflationRate);
-        //PassiveIncomeText.text = "" + Mathf.Round(TotalPassiveIncome);
-        //CashFlowText_Red.text = "" + Mathf.Round((CashFlow));
-        //CashFlowText_Green.text = "" + Mathf.Round((CashFlow));
-        /*
-                if (CashFlow >= 0)
-                {
-                    CashflowObj_green.SetActive(true);
-                    CashflowObj_red.SetActive(false);
-                }
-                else
-                {
-                    CashflowObj_red.SetActive(true);
-                    CashflowObj_green.SetActive(false);
-                }
-        */
-        //Debug.Log($"First_File_Zero:{First_File_Zero},Update: numberOfCoins = {numberOfCoins}, PassiveIncome = {PassiveIncome}, TotalPassiveIncome = {TotalPassiveIncome}, Salary = {Salary}, JobPresent = {JobPresent}, inflationRate = {inflationRate}, CashFlow = {CashFlow}, Casflow_Percentage = {Casflow_Percentage}");
     }
+
+
 
     public static class NumberFormatter
     {
@@ -195,29 +198,77 @@ public class GameManager : MonoBehaviour
         UpdateBackpackVisibility(); // Update backpack visibility
         //Debug.Log("Job collected: JobPresent = true, Salary reset, file counter reset to 0");
     }
+    public void RestartGame()
+    {
+        // Reset states
+        isGameOver = false;
+        remainingDuration = Duration;
+        totalInflationCut = 0;
+        uiFill.fillAmount = 1f; // full again
+
+        // Stop any old coroutine (if running) and restart
+        if (incomeCoroutine != null)
+            StopCoroutine(incomeCoroutine);
+
+        incomeCoroutine = StartCoroutine(UpdateIncomeAndTimer());
+
+        Debug.Log("Game Restarted!");
+    }
     private IEnumerator UpdateIncomeAndTimer()
     {
-        while (true)
+        remainingDuration = Duration; // reset when coroutine starts
+
+        while (!isGameOver)
         {
-            //uiText.text = $"{remainingDuration}"; // Display time in seconds
             uiFill.fillAmount = Mathf.InverseLerp(0, Duration, remainingDuration);
 
             if (remainingDuration <= 0)
             {
-                // Use 50% inflation if coins >= 1 crore, else 20%
-                float inflationPercentage = numberOfCoins >= 10000000f ? 0.4f : 0.2f;
+                // Calculate net monthly change
+                float monthlyIncome = 0f;
+                float monthlyExpense = 0f;
 
+                // 1. Credit Salary + Passive Income first
+                if (JobPresent || PassiveIncome > 0)
+                {
+                    monthlyIncome = TotalPassiveIncome;
+                    numberOfCoins += TotalPassiveIncome;
+                }
+
+                // 2. Apply Inflation
+                float inflationPercentage = numberOfCoins >= 10000000f ? 0.4f : 0.2f;
                 float inflationCut = numberOfCoins * inflationPercentage;
+                monthlyExpense = inflationCut;
+
                 totalInflationCut += inflationCut;
+                TotalInflationCutText.text = NumberFormatter.FormatNumberIndianSystem(totalInflationCut);
 
                 numberOfCoins -= (int)inflationCut;
 
+                // Calculate net change for popup
+                float netChange = monthlyIncome - monthlyExpense;
+
+                // Show popup for monthly calculation
+                string formattedValue = NumberFormatter.FormatNumberIndianSystem(Mathf.Abs(netChange));
+                string sign = netChange >= 0 ? "+" : "-";
+                Color popupColor = netChange >= 0 ? Color.green : Color.red;
+
+                // Assuming you have popupManager reference in GameManager
+                // You'll need to add this reference to your GameManager class
+                if (popupManager != null)
+                {
+                    popupManager.ShowPopup($"{sign}{formattedValue}", popupColor, new Vector2(150, 800));
+                }
+
+                // 3. Update assets & portfolio
                 assetManager.UpdateAssetValues();
                 assetManager.UpdateTotalPortfolioValue();
+
                 First_Zero = false;
+
+                // 4. Reset timer
                 remainingDuration = Duration;
             }
-
             else
             {
                 remainingDuration--;
@@ -227,11 +278,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator ShowGameOverScreenAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        ShowGameOverScreen();
-    }
+
+    /* IEnumerator ShowGameOverScreenAfterDelay(float delay)
+     {
+         yield return new WaitForSeconds(delay);
+         ShowGameOverScreen();
+     }*/
 
     // Method to change job status
     public void SetJobStatus(bool isPresent)
@@ -246,7 +298,7 @@ public class GameManager : MonoBehaviour
         bool shouldActivateBackpacks = JobPresent;
 
         // Boy
-        if (boyBackpackObject != null)
+        /*if (boyBackpackObject != null)
         {
             boyBackpackObject.SetActive(shouldActivateBackpacks);
         }
@@ -313,7 +365,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogWarning("Witch's backpack object is not assigned in the GameManager.");
-        }
+        }*/
 
         // Elon
         if (ElonBackpackObject != null)
@@ -325,7 +377,7 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Elon's backpack object is not assigned in the GameManager.");
         }
 
-        // Mansa
+       /* // Mansa
         if (MansaBackpackObject != null)
         {
             MansaBackpackObject.SetActive(shouldActivateBackpacks);
@@ -375,7 +427,7 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Chubbs' backpack object is not assigned in the GameManager.");
         }
 
-        // Office Girl
+        // Office Girl*/
         if (OfficeGirlBackpackObject != null)
         {
             OfficeGirlBackpackObject.SetActive(shouldActivateBackpacks);
@@ -386,9 +438,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void TestIncreaseCoins()
-    {
-        numberOfCoins += 200000;
-    }
+   
 
 }

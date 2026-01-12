@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class LotteryManager : MonoBehaviour
 {
@@ -11,18 +12,13 @@ public class LotteryManager : MonoBehaviour
     public TMP_Text timerText;
     public GameObject timerPanel;
     private int chosenNumber;
-    public TmpLongPopup popupManager;
+    [SerializeField]private TmpLongPopup popupManager;
 
     void Start()
     {
-        if (popupManager == null)
-        {
-            popupManager = FindObjectOfType<TmpLongPopup>();
-        }
+        
 
-        // (Assignment checks omitted for brevity)
-
-        // Hide the lottery and timer panels at the start
+        
         lotteryPanel.SetActive(false);
         timerPanel.SetActive(false);
 
@@ -38,6 +34,21 @@ public class LotteryManager : MonoBehaviour
             lotteryButtons[i].onClick.RemoveAllListeners();
         }
     }
+    private void OnEnable()
+    {
+        GameManager.OnGameOver += CloseLotteryPanel;
+    }
+    private void OnDisable()
+    {
+        GameManager.OnGameOver -= CloseLotteryPanel;
+    }
+    public void CloseLotteryPanel()
+    {
+        // Refresh the lottery button numbers every time the panel is shown
+        RefreshLotteryButtons();
+        lotteryPanel.SetActive(false);
+    }
+
 
     public void ShowLotteryPanel()
     {
@@ -55,10 +66,13 @@ public class LotteryManager : MonoBehaviour
 
             // Remove old listeners before adding new ones
             lotteryButtons[i].onClick.RemoveAllListeners();
-            int number = randomNumber; // Capture the current value of randomNumber
-            lotteryButtons[i].onClick.AddListener(() => OnLotteryButtonClick(number));
+
+            // Capture current number in local variable
+            int capturedNumber = randomNumber;
+            lotteryButtons[i].onClick.AddListener(() => OnLotteryButtonClick(capturedNumber));
         }
     }
+
 
     void OnLotteryButtonClick(int number)
     {
@@ -84,15 +98,28 @@ public class LotteryManager : MonoBehaviour
 
         bool isWinner = Random.value < 0.25f; // 25% probability of winning
 
+        // Define screen position for popup (150 px from left, 200 px from top)
+        Vector2 popupScreenPos = new Vector2(150, 800);
+
         if (isWinner)
         {
-            popupManager.ShowPopup($"Your Number {chosenNumber} won, you got 25000", Color.green, new Vector3(450, 1700, 0));
+            popupManager.ShowPopup(
+                $"Your Number {chosenNumber} won, you got 25000",
+                Color.green,
+                popupScreenPos
+            );
             GameManager.numberOfCoins += 25000;
         }
         else
         {
-            popupManager.ShowPopup($"Your Number {chosenNumber} did not win", Color.red, new Vector3(500, 1700, 0));
+            popupManager.ShowPopup(
+                $"Your Number {chosenNumber} did not win",
+                Color.red,
+                popupScreenPos
+            );
         }
+
         timerPanel.SetActive(false);
     }
+
 }
