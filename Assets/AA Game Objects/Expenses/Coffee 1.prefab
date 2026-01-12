@@ -66,17 +66,17 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2295508675643541535, guid: fbef455c6ffb0b742a65b336d4a78cda,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 1f751635f0896344d8dd4ef7e136acd6, type: 2}
     - target: {fileID: 4606612794475786062, guid: fbef455c6ffb0b742a65b336d4a78cda,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 1c660fc8e2a054f4bb4cf920f94c929a, type: 2}
     - target: {fileID: 6563017022236911998, guid: fbef455c6ffb0b742a65b336d4a78cda,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 92bf5f3500728804ba35359fd597431c, type: 2}
     - target: {fileID: 7026830642149364603, guid: fbef455c6ffb0b742a65b336d4a78cda,
@@ -150,7 +150,8 @@ PrefabInstance:
       value: Coffee
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5611025287838358892, guid: fbef455c6ffb0b742a65b336d4a78cda, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbef455c6ffb0b742a65b336d4a78cda, type: 3}
@@ -259,17 +260,17 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2295508675643541535, guid: fbef455c6ffb0b742a65b336d4a78cda,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 1f751635f0896344d8dd4ef7e136acd6, type: 2}
     - target: {fileID: 4606612794475786062, guid: fbef455c6ffb0b742a65b336d4a78cda,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 1c660fc8e2a054f4bb4cf920f94c929a, type: 2}
     - target: {fileID: 6563017022236911998, guid: fbef455c6ffb0b742a65b336d4a78cda,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 92bf5f3500728804ba35359fd597431c, type: 2}
     - target: {fileID: 7026830642149364603, guid: fbef455c6ffb0b742a65b336d4a78cda,
@@ -343,7 +344,8 @@ PrefabInstance:
       value: Coffee (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5611025287838358892, guid: fbef455c6ffb0b742a65b336d4a78cda, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbef455c6ffb0b742a65b336d4a78cda, type: 3}
