@@ -8,7 +8,7 @@ using static GameManager;
 using UnityEngine.UI;
 using EZCameraShake;
 using JetBrains.Annotations;
-using com.jiogames.wrapper;
+
 
 
 [System.Serializable]
@@ -1498,8 +1498,6 @@ public class Character : MonoBehaviour
         //gameOverVideoPlayer.gameOverUI.SetActive(true);
         yield return new WaitForSeconds(1);
         // IronSourceAdsManager.instance.ShowInterstitial();
-        JioWrapperJS.Instance.showInterstitial();
-        JioWrapperJS.Instance.cacheAd();
         // Directly activate the game over UI
     }
 
