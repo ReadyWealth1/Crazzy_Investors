@@ -1,3 +1,4 @@
+using com.jiogames.wrapper;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -147,7 +148,7 @@ public class PauseMenu : MonoBehaviour
             highScoreManager.CheckForHighScore();
         }
         Character.isGameStart = false;  
-        //JioWrapperJS.Instance.showInterstitial();
+        JioWrapperJS.Instance.showInterstitial();
         SceneManager.LoadScene("new onwrinner samplescene");
     }
 

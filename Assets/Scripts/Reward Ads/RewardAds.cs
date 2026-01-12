@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using com.jiogames.wrapper;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +17,7 @@ public class RewardAds : MonoBehaviour
     {
        PlayerPrefs.SetInt("HomeRewardBtnClick", 1);
         // IronSourceAdsManager.instance.ShowRewarded();
-       // JioWrapperJS.Instance.showRewarded();
+        JioWrapperJS.Instance.showRewarded();
        
     }
 }

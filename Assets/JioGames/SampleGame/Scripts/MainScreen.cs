@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using com.jiogames.wrapper;
 
 namespace Jio.SampleGame
 {
@@ -28,7 +29,7 @@ namespace Jio.SampleGame
             UIManager.Instance.mainScreen.SetActive(false);
             UIManager.Instance.gameplayScreen.SetActive(true);
 
-           // JioWrapperJS.Instance.getUserProfile();
+            JioWrapperJS.Instance.getUserProfile();
 
             /// <summary>
             ///     Call the MidRoll and RV ad.
@@ -41,7 +42,7 @@ namespace Jio.SampleGame
         {
             AudioManager.Instance.Audio_ButtonPress();
             UIManager.Instance.infoPopup.SetActive(true);
-            //JioWrapperJS.Instance.setTopBanner();
+            JioWrapperJS.Instance.setTopBanner();
         }
 
         public void OnClick_InfoBack()
@@ -49,7 +50,7 @@ namespace Jio.SampleGame
             AudioManager.Instance.Audio_ButtonPress();
             UIManager.Instance.infoPopup.SetActive(false);
 
-            //JioWrapperJS.Instance.setBottomBanner();
+            JioWrapperJS.Instance.setBottomBanner();
         }
 
         public void OnClick_SoundOnOff()
