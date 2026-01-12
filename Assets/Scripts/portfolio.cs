@@ -19,7 +19,7 @@ public class portfolio : MonoBehaviour
     {
         if (pauseMenu == null) // Attempt to find PauseMenu if not set in Inspector
         {
-            pauseMenu = Object.FindFirstObjectByType<PauseMenu>();
+            pauseMenu = FindObjectOfType<PauseMenu>();
             if (pauseMenu == null)
             {
                 Debug.LogError("PauseMenu component not found. Ensure PauseMenu is added to the scene.");
@@ -31,7 +31,7 @@ public class portfolio : MonoBehaviour
         }
 
         StartCoroutine(InitialWarningDelay());
-        character = Object.FindFirstObjectByType<Character>();
+        character = FindObjectOfType<Character>();
         if (character == null)
         {
             Debug.LogWarning("Character component not found in the scene.");
@@ -55,39 +55,38 @@ public class portfolio : MonoBehaviour
         }
     }
 
-    private bool hasShownWarning = false; // Flag to track if the warning has been shown
-
     private void Warning()
     {
-        if (isInitialDelayPassed)
+        // Debug current status
+        //Debug.Log($"[Warning Check] Time: {Time.time}, LastWarningTime: {lastWarningTime}, Coins: {GameManager.numberOfCoins}, isPortfolioZero: {Assets.isPortfolioZero}");
+/*
+        if (character != null && character.isDead)
         {
-            // Check if coin count is below threshold and cooldown has passed, and if warning has not been shown yet
-            if (GameManager.numberOfCoins < 100000 && Time.time >= lastWarningTime + warningCooldown && Assets.isPortfolioZero && !hasShownWarning && !GameManager.isGameOver)
+            Debug.Log("Character is dead. Skipping warning.");
+            return; // Stop warning if the character has already died
+        }*/
+
+        // Check if coin count is below threshold and cooldown has passed
+        if (GameManager.numberOfCoins < 100000 && Time.time >= lastWarningTime + warningCooldown && Assets.isPortfolioZero == true)
+        {
+            Debug.Log("Warning conditions met. Activating warning canvas and pausing game.");
+            // Show warning canvas
+            canvas.SetActive(true);
+            lastWarningTime = Time.time; // Reset the last warning time
+            isCanvasActive = true;
+            WarningImg.SetActive(true);
+            if (pauseMenu != null)
             {
-                Debug.Log("Warning conditions met. Activating warning canvas and pausing game.");
-
-                // Show warning canvas
-                canvas.SetActive(true);
-                WarningImg.SetActive(true);
-
-                // Mark the warning as shown
-                hasShownWarning = true;
-                lastWarningTime = Time.time; // Reset the last warning time
-                isCanvasActive = true;
-
-                if (pauseMenu != null)
-                {
-                    pauseMenu.PauseGame(); // Pause the game
-                    Debug.Log("Game paused by PauseMenu.");
-                }
-                else
-                {
-                    Debug.LogWarning("PauseMenu not assigned. Game will not pause.");
-                }
+                pauseMenu.PauseGame(); // Pause the game
+                Debug.Log("Game paused by PauseMenu.");
+            }
+            else
+            {
+                Debug.LogWarning("PauseMenu not assigned. Game will not pause.");
             }
         }
+        
     }
-
 
     public void PortfolioActivate()
     {

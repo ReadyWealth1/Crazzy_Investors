@@ -12,4 +12,3 @@ EditorBuildSettings:
     path: Assets/Scenes/PersistentManagerScene.unity
     guid: c1f081a197e4c144a90fd7e2335b5885
   m_configObjects: {}
-  m_UseUCBPForAssetBundles: 0

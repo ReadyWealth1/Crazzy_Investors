@@ -5,13 +5,12 @@ public class HighScoreManager : MonoBehaviour
 {
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI highScoreText;
-    //public TextMeshProUGUI highScoreTextGameOver;
-    // public TextMeshProUGUI scoreTextGamOver;
+    public TextMeshProUGUI highScoreTextGameOver;
+    public TextMeshProUGUI scoreTextGamOver;
 
-    public int currentScore = 0;
+    private int currentScore = 0;
     private int highScore = 0;
-    private bool isGameOver = false;
-    public float scoreCount = 0f;
+    private bool isGameOver = false; // Add this flag
 
    /* private void OnEnable()
     {
@@ -51,7 +50,8 @@ public class HighScoreManager : MonoBehaviour
 
 
         highScoreText.text = highScore.ToString();
-       
+        Debug.Log(" highScoreText.text" + highScoreText.text);
+        Debug.Log(highScoreText.text + "highScoreText");
         //   highScoreText.text = highScore.ToString();
 
     }
@@ -59,15 +59,11 @@ public class HighScoreManager : MonoBehaviour
 
     private void Update()
     {
-        if (!isGameOver && Character.isGameStart == true) // Only update the score if the game is not over
+        if (!isGameOver && Character.GameStarted == true) // Only update the score if the game is not over
         {
-           
-            scoreCount += Time.deltaTime *10;
-            //Debug.Log(currentScore + "==============");
             // Update the current score during the game
             // This example assumes score increases with time; adjust as needed
-            currentScore = (int)(scoreCount ); // Example: 10 points per second
-            //Debug.Log(currentScore+"==============");
+            currentScore = (int)(Time.timeSinceLevelLoad * 10); // Example: 10 points per second
             UpdateScoreUI();
         }
     }
@@ -98,17 +94,14 @@ public class HighScoreManager : MonoBehaviour
     // New function to update UI when the game is over
     public void UpdateGameOverUI()
     {
-        //highScoreTextGameOver.text = highScore.ToString();
-       // scoreTextGamOver.text = currentScore.ToString();
+        highScoreTextGameOver.text = highScore.ToString();
+        scoreTextGamOver.text = currentScore.ToString();
         isGameOver = true; // Set the game over flag
-        PlayerPrefs.SetInt("CurrentScore",currentScore);
-        Debug.Log("CurrentScore"+ currentScore);
     }
 
     private void UpdateScoreUI()
     {
         scoreText.text = currentScore.ToString();
-       
     }
 
  /*   private void UpdateHighScoreUI()

@@ -25,7 +25,7 @@ public class DataSaver : MonoBehaviour
 
     private void Awake()
     {
-   
+        Debug.Log("Data Saver Awake");
         if (Instance == null)
         {
             Instance = this;
@@ -58,7 +58,7 @@ public class DataSaver : MonoBehaviour
         else if (PlayerPrefs.GetInt("GuestLogin") == 1)
         {
             guestData = new GuestData(PlayerPrefs.GetInt("UserGems"), PlayerPrefs.GetInt("HighScore"));
-           // Debug.Log("Guest login loaded.");
+            Debug.Log("Guest login loaded.");
         }
         else
         {

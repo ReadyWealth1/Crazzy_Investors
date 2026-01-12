@@ -1,46 +1,15 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using TMPro;
 
 public class TMPPopupManager : MonoBehaviour
 {
-    [Header("Popup Settings")]
-    [Tooltip("The UI prefab for the popup. Must have a RectTransform and TextMeshProUGUI component.")]
     public GameObject popupPrefab;
 
-    [Header("Animation Settings")]
-    [Tooltip("How high the popup floats in pixels.")]
-    public float floatHeight = 100f;
-
-    [Tooltip("Total duration of the animation.")]
-    public float duration = 1.0f;
-
-    [Tooltip("Delay before the animation starts.")]
-    public float startDelay = 0.1f;
-
-    private Canvas _parentCanvas;
-
-    void Awake()
+    public void ShowPopup(string text, Color color, Vector3 position)
     {
-        // Cache the parent canvas
-        _parentCanvas = GetComponentInParent<Canvas>();
-        if (_parentCanvas == null)
-        {
-            Debug.LogError($"{name}: No parent Canvas found! Popups may not display correctly.", this);
-        }
-    }
-
-    /// <summary>
-    /// Shows a popup at a given World Position with custom text and color.
-    /// </summary>
-    public void ShowPopup(string text, Color color, Vector2 canvasPosition)
-    {
-        GameObject popupInstance = Instantiate(popupPrefab, _parentCanvas.transform);
-        RectTransform popupRect = popupInstance.GetComponent<RectTransform>();
-
-        // Directly set anchored position
-        popupRect.anchoredPosition = canvasPosition;
-
+        GameObject popupInstance = Instantiate(popupPrefab, transform);
+        popupInstance.transform.position = position;
         TextMeshProUGUI textMesh = popupInstance.GetComponentInChildren<TextMeshProUGUI>();
         if (textMesh != null)
         {
@@ -50,73 +19,33 @@ public class TMPPopupManager : MonoBehaviour
 
         CanvasGroup canvasGroup = popupInstance.GetComponent<CanvasGroup>();
         if (canvasGroup == null)
-            canvasGroup = popupInstance.AddComponent<CanvasGroup>();
-
-        StartCoroutine(FloatAndFade(popupRect, canvasGroup));
-    }
-
-    /// <summary>
-    /// Converts a world position to the correct anchored position on the Canvas.
-    /// </summary>
-    private void PositionPopupOnCanvas(RectTransform popupRect, Vector3 worldPosition)
-    {
-        Camera mainCamera = Camera.main;
-        if (mainCamera == null)
         {
-            Debug.LogWarning("No Main Camera found for positioning popup.");
-            return;
+            canvasGroup = popupInstance.AddComponent<CanvasGroup>();
         }
 
-        // 1. Convert the world position to a screen point
-        Vector2 screenPoint = mainCamera.WorldToScreenPoint(worldPosition);
-
-        // 2. Convert the screen point to a local position within the Canvas
-        RectTransform canvasRect = _parentCanvas.GetComponent<RectTransform>();
-
-        // Handle different Canvas Render Modes
-        Camera uiCamera = _parentCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : mainCamera;
-
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRect, screenPoint, uiCamera, out Vector2 localPoint);
-
-        // 3. Set the anchored position
-        popupRect.anchoredPosition = localPoint;
+        StartCoroutine(FloatAndFade(popupInstance, canvasGroup));
     }
 
-    /// <summary>
-    /// Handles the floating upward and fading out effect of the popup using RectTransform.
-    /// </summary>
-    private IEnumerator FloatAndFade(RectTransform popupRect, CanvasGroup canvasGroup)
+    private IEnumerator FloatAndFade(GameObject popupInstance, CanvasGroup canvasGroup)
     {
-        // Wait for the initial delay
-        yield return new WaitForSeconds(startDelay);
+        float duration = 1.0f;
+        float elapsed = -0.2f;
+        Vector3 startPosition = popupInstance.transform.position;
+        Vector3 endPosition = startPosition + Vector3.up * 100.0f;
 
-        Vector2 startPos = popupRect.anchoredPosition;
-        Vector2 endPos = startPos + Vector2.up * floatHeight;
-
-        float startTime = Time.time;
-        float endTime = startTime + duration;
-
-        while (Time.time < endTime)
+        while (elapsed < duration)
         {
-            // Calculate progress (0 to 1)
-            float t = (Time.time - startTime) / duration;
+            float t = elapsed / duration;
 
-            // Move upwards using anchoredPosition
-            popupRect.anchoredPosition = Vector2.Lerp(startPos, endPos, t);
-
-            // Slightly scale up
+            popupInstance.transform.position = Vector3.Lerp(startPosition, endPosition, t);
             float scale = Mathf.Lerp(1.0f, 1.2f, t);
-            popupRect.localScale = new Vector3(scale, scale, scale);
-
-            // Fade out
+            popupInstance.transform.localScale = new Vector3(scale, scale, scale);
             canvasGroup.alpha = Mathf.Lerp(1.0f, 0.0f, t);
 
+            elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // Destroy popup after animation
-        if (popupRect != null)
-            Destroy(popupRect.gameObject);
+        Destroy(popupInstance);
     }
 }

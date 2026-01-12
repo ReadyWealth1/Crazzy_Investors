@@ -36,11 +36,11 @@ public class SceneLoader : MonoBehaviour
             SceneManager.SetActiveScene(scene);
             if (PlayerPrefs.GetInt("GuestLogin") == 1)
             {
-                UiManager.Instance.DiamondUpdate(PlayerPrefs.GetInt("UserGems"));
+                UiManager.Instance.DiamondUpdate(DataSaver.Instance.GuestData.diamonds);
             }
             else
             {
-                UiManager.Instance.DiamondUpdate(PlayerPrefs.GetInt("UserGems"));
+                UiManager.Instance.DiamondUpdate(DataSaver.Instance.UserData.diamonds);
             }
         }
     }

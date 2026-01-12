@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class flicker : MonoBehaviour
 {
-    /*[Tooltip("External light to flicker; you can leave this null if you attach script to a light")]
+    [Tooltip("External light to flicker; you can leave this null if you attach script to a light")]
     public new Light light;
     [Tooltip("Minimum random light intensity")]
     public float minIntensity = 0f;
@@ -54,7 +54,7 @@ public class flicker : MonoBehaviour
         // Calculate new smoothed average
         light.intensity = lastSum / (float)smoothQueue.Count;
     }
-*/
+
 }
 
 
