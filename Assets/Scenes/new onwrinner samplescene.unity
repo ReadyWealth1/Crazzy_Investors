@@ -4555,11 +4555,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2394991405670575477, guid: 511712a7f9318594d8a3f4d014d015f5,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4053996825502647555, guid: 511712a7f9318594d8a3f4d014d015f5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -4610,11 +4605,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[7].m_Target
       value: 
       objectReference: {fileID: 8554481692266648832}
-    - target: {fileID: 7627946775607216506, guid: 511712a7f9318594d8a3f4d014d015f5,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 21.615
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7815,6 +7805,26 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[5].m_Target
       value: 
       objectReference: {fileID: 8554481692266648832}
+    - target: {fileID: 5648205677969089828, guid: 559bceb138477e24c9832206f7356177,
+        type: 3}
+      propertyPath: m_RaycastPadding.w
+      value: 31.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5648205677969089828, guid: 559bceb138477e24c9832206f7356177,
+        type: 3}
+      propertyPath: m_RaycastPadding.x
+      value: 65.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 5648205677969089828, guid: 559bceb138477e24c9832206f7356177,
+        type: 3}
+      propertyPath: m_RaycastPadding.y
+      value: 31.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5648205677969089828, guid: 559bceb138477e24c9832206f7356177,
+        type: 3}
+      propertyPath: m_RaycastPadding.z
+      value: 65
+      objectReference: {fileID: 0}
     - target: {fileID: 6770077611399477649, guid: 559bceb138477e24c9832206f7356177,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -7850,6 +7860,11 @@ PrefabInstance:
       propertyPath: spinPanel
       value: 
       objectReference: {fileID: 1644899630}
+    - target: {fileID: 8628352682769081113, guid: 559bceb138477e24c9832206f7356177,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8678428752659685773, guid: 559bceb138477e24c9832206f7356177,
         type: 3}
       propertyPath: m_Pivot.x
