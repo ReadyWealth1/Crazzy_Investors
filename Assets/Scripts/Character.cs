@@ -100,7 +100,7 @@ public class Character : MonoBehaviour
     private LotteryManager lotteryManager;
     public Vector3 startPosition = new Vector3(0, 0, 0);
     private int PopUpX = 150; 
-    private int PopUpY =800;
+    private int PopUpY = 300;
     private int PopUpZ = 0;
     //public GameOverVideoPlayer gameOverVideoPlayer;
 
@@ -752,6 +752,14 @@ public class Character : MonoBehaviour
 
         healthSlider.value = 1f;
         healthSlider.gameObject.SetActive(true);
+
+        RectTransform healthRect = healthSlider.GetComponent<RectTransform>();
+        if (healthRect != null)
+        {
+            // Move it down based on user request "Get it down"
+            // Assuming Top-Left anchor, settig Y to -800 should lower it significantly
+            healthRect.anchoredPosition = new Vector2(healthRect.anchoredPosition.x, -800);
+        }
 
         // Refresh the power-up duration by restarting the coroutine
         if (depleteCoroutine != null)

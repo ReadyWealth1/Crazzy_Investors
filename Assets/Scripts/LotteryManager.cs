@@ -98,8 +98,8 @@ public class LotteryManager : MonoBehaviour
 
         bool isWinner = Random.value < 0.25f; // 25% probability of winning
 
-        // Define screen position for popup (150 px from left, 200 px from top)
-        Vector2 popupScreenPos = new Vector2(150, 800);
+        // Define screen position for popup (150 px from left, 300 px from top)
+        Vector2 popupScreenPos = new Vector2(150, 300);
 
         if (isWinner)
         {

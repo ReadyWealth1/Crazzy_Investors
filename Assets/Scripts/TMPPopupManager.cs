@@ -38,6 +38,13 @@ public class TMPPopupManager : MonoBehaviour
         GameObject popupInstance = Instantiate(popupPrefab, _parentCanvas.transform);
         RectTransform popupRect = popupInstance.GetComponent<RectTransform>();
 
+        // Reset anchors to center to ensure consistent positioning
+        popupRect.anchorMin = new Vector2(0.5f, 0.5f);
+        popupRect.anchorMax = new Vector2(0.5f, 0.5f);
+        popupRect.pivot = new Vector2(0.5f, 0.5f);
+
+        Debug.Log($"[TMPPopupManager] ShowPopup called with text: {text}, Position: {canvasPosition}");
+        
         // Directly set anchored position
         popupRect.anchoredPosition = canvasPosition;
 
