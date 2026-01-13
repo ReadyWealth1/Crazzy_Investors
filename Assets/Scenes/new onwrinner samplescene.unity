@@ -2312,7 +2312,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1332978944}
+  m_Father: {fileID: 1187429767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &788106210 stripped
 RectTransform:
@@ -2642,7 +2642,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 771088499}
   m_Father: {fileID: 1332978944}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1187429769
@@ -3910,7 +3911,6 @@ Transform:
   - {fileID: 4616032417381031191}
   - {fileID: 1979052534558001232}
   - {fileID: 3261055049268378024}
-  - {fileID: 771088499}
   - {fileID: 1187429767}
   - {fileID: 1532595986}
   - {fileID: 1960867548}
