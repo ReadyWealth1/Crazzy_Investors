@@ -431,9 +431,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1557805524040388855}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -16, z: 0}
+  m_LocalScale: {x: 0.3552903, y: 0.10873982, z: 0.13408351}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8337785600078132426}
@@ -878,7 +878,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupPrefab: {fileID: 4509353981164477317, guid: 381334b2d4d7205478d09093858c494e,
     type: 3}
-  floatHeight: 100
+  floatHeight: 20
   duration: 5
   startDelay: 0.1
 --- !u!1 &3095149020640511187
@@ -928,7 +928,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupPrefab: {fileID: 4509353981164477317, guid: 957452a5d111cb44693ef5317aab68f5,
     type: 3}
-  floatHeight: 100
+  floatHeight: 1
   duration: 5
   startDelay: 0.1
 --- !u!114 &4492615489578021820
@@ -991,7 +991,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupPrefab: {fileID: 4509353981164477317, guid: 957452a5d111cb44693ef5317aab68f5,
     type: 3}
-  floatHeight: 100
+  floatHeight: 20
   duration: 1
   startDelay: 0.1
 --- !u!1 &3819459537955028245
