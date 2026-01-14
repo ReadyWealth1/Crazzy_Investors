@@ -257,7 +257,7 @@ public class GameManager : MonoBehaviour
                 // You'll need to add this reference to your GameManager class
                 if (popupManager != null)
                 {
-                    popupManager.ShowPopup($"{sign}{formattedValue}", popupColor, new Vector2(150, 800));
+                    popupManager.ShowPopup($"{sign}{formattedValue}", popupColor, new Vector2(150, 300));
                 }
 
                 // 3. Update assets & portfolio

@@ -31,6 +31,11 @@ public class TimedPassiveIncome : MonoBehaviour
     {
         while (true)
         {
+            if (GameManager.isGameOver)
+            {
+                yield return new WaitForSeconds(1f);
+                continue;
+            }
             foreach (var asset in timedIncomes.Keys)
             {
                 timedIncomes[asset].RemoveAll(income => income.RemainingTime <= 0);
