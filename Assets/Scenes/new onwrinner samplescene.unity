@@ -2161,6 +2161,7 @@ MonoBehaviour:
   LongpopupManager: {fileID: 1543558744}
   startPosition: {x: 0, y: 0, z: 0}
   healthSlider: {fileID: 1542596554}
+  healthSliderOffset: -800
   powerUpDuration: 30
   isNextJumpQueued: 0
   isHealthInsuranceActive: 0
@@ -2464,6 +2465,7 @@ MonoBehaviour:
   LongpopupManager: {fileID: 1543558744}
   startPosition: {x: 0, y: 0, z: 0}
   healthSlider: {fileID: 1542596554}
+  healthSliderOffset: -800
   powerUpDuration: 30
   isNextJumpQueued: 0
   isHealthInsuranceActive: 0

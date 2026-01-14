@@ -754,12 +754,9 @@ public class Character : MonoBehaviour
         healthSlider.gameObject.SetActive(true);
 
         RectTransform healthRect = healthSlider.GetComponent<RectTransform>();
-        if (healthRect != null)
-        {
-            // Move it down based on user request "Get it down"
-            // Assuming Top-Left anchor, settig Y to -800 should lower it significantly
-            healthRect.anchoredPosition = new Vector2(healthRect.anchoredPosition.x, -800);
-        }
+
+
+
 
         // Refresh the power-up duration by restarting the coroutine
         if (depleteCoroutine != null)
@@ -955,7 +952,7 @@ public class Character : MonoBehaviour
             LongpopupManager.ShowPopup(
     $"<color=green>Health Insurance 80% saved.</color>\n<color=red>Charged {(HandleHospitalValue * 0.2f):N0}.</color>",
     Color.green,
-    new Vector3(600, 1700, 0)
+    new Vector3(600, 300, 0)
 );
 
 
